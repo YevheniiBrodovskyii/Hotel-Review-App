@@ -1,8 +1,0 @@
-html[data-theme='dark'] {
-  --nav-background-color: #292929;
-}
-
-html[data-theme='light'] {
-  --background-color: #dfdfdf;
-}
-

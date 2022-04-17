@@ -1,0 +1,40 @@
+.Hotel_card
+    margin: 0 auto
+    padding: 20px
+    max-height: 400px
+    width: 400px
+    border-radius: 30px
+    background-color: #ffffffcc
+    &-name
+        font-family: 'IM Fell Great Primer SC', serif
+        font-size: 30px
+        text-align: center
+    &_wrapper
+        margin: 15px 0 15px 0
+        display: grid
+        grid-template: 80px 80px / 47.5% 47.5%
+        column-gap: 5%
+    &-img
+        background-color: grey
+        grid-row: 1/3
+    &-localization
+        text-align: center
+    &-stars
+        padding: 0 15px 0 15px
+        display: flex
+        justify-content: center
+    &-review
+        text-align: center
+        border: 1px solid #000000
+        border-radius: 30px
+        width: 100%
+        min-height: 170px
+    &-author
+        margin-top: 5px
+        font-size: 13px
+        text-align: center
+
+.fa-star
+    font-size: 25px
+    padding-left: 3px
+    color: #e9bb26

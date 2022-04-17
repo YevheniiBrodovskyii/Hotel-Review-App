@@ -1,0 +1,30 @@
+.NavBar
+    position: fixed
+    display: flex
+    justify-content: space-between
+    width: 20%
+    height: 75px
+    padding: 15px 25px 0 25px
+    background-color: rgba(0, 0, 0, 0.81)
+    border-bottom-left-radius: 30px
+    border-bottom-right-radius: 30px
+    &_container
+        width: 26.6%
+        margin: 0 auto
+    &_item
+        text-decoration: none
+        &:hover , &:active
+            .NavBar_title
+                transition: 0.2s all
+                color: #DAAD86
+                border-bottom: 1px solid #DAAD86
+            .NavBar_img
+                transition: 0.2s all
+                transform: scale(1.1)
+    &_img
+        width: 35px
+        margin: 0 auto
+    &_title
+        text-align: center
+        color: white
+        padding-bottom: 5px

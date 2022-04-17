@@ -1,4 +1,6 @@
-import { Hotel } from "./Hotel";
+import { Hotel } from "../Hotel/Hotel";
+
+import "./hotels.sass";
 
 function Hotels(props) {
   const { hotels = [] } = props;

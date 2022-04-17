@@ -1,3 +1,5 @@
+import "./createReview.sass";
+
 function CreateReview() {
   return (
     <div className="Create_card">
