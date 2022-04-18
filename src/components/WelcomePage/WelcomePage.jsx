@@ -27,12 +27,12 @@ function WelcomePage() {
   function loginClick() {
     onAuthStateChanged(auth, (user) => {
       if (user != null) {
-        console.log("OK");
+        console.log("User logged in");
         isAuthenticated(true);
       } else {
         signInWithEmailAndPassword(auth, inputEmail, inputPass);
         isError(true);
-        console.log("raz raz raz");
+        console.log("User logged out");
       }
     });
   }
@@ -44,7 +44,7 @@ function WelcomePage() {
       ) : (
         <div>
           {signUp ? (
-            <SignUpPage isOpen={toSignUp} back={toSignUp} />
+            <SignUpPage back={toSignUp} />
           ) : (
             <div className="Welcome_page-container">
               <div className="Welcome_page animate__animated animate__fadeIn">

@@ -12,7 +12,7 @@ import { Hotels } from "../Hotels/Hotels";
 import "./signUpPage.sass";
 
 function SignUpPage(props) {
-  const { isOpen, back } = props;
+  const { back } = props;
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
   const [inputPass2, setInputPass2] = useState("");

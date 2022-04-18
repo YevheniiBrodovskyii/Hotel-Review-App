@@ -18,6 +18,7 @@ import { firebaseConfig, app, db, auth } from "../firebaseConfig";
 import { Hotels } from "./Hotels/Hotels";
 import WelcomePage from "./WelcomePage/WelcomePage";
 import NavBar from "./NavBar/NavBar";
+import MyAccount from "./MyAccount/MyAccount";
 
 function MainPage() {
   const [hotels, setHotels] = useState([]);
@@ -27,7 +28,7 @@ function MainPage() {
     const _hotels = [];
     const querySnapshot = await getDocs(collection(db, "reviews"));
     querySnapshot.forEach((doc) => {
-      _hotels.push(doc.data());
+      _hotels.push([doc.id, doc.data()]);
     });
     console.log("Data is fetched!");
     setHotels(_hotels);
@@ -41,8 +42,9 @@ function MainPage() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
-        setAuthentication(false);
+        setAuthentication(true);
         console.log("User is signed in");
+        return user;
       } else {
         setAuthentication(false);
         console.log("User is signed out");
@@ -58,8 +60,9 @@ function MainPage() {
     <div className="container">
       {authentication ? (
         <>
-          <NavBar />
-          <Hotels hotels={hotels} />
+          {/* <NavBar />
+          <Hotels hotels={hotels} /> */}
+          <MyAccount hotels={hotels} isauth={setAuthentication} />
         </>
       ) : (
         <WelcomePage />
