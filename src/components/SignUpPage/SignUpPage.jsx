@@ -2,7 +2,7 @@ import { useState } from "react";
 import { auth } from "../../firebaseConfig";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
-import { Hotels } from "../Hotels/Hotels";
+import Hotels from "../Hotels/Hotels";
 
 import "./signUpPage.sass";
 
