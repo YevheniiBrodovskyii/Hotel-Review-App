@@ -19,6 +19,7 @@ import { Hotels } from "./Hotels/Hotels";
 import WelcomePage from "./WelcomePage/WelcomePage";
 import NavBar from "./NavBar/NavBar";
 import MyAccount from "./MyAccount/MyAccount";
+import CreateReview from "./CreateReview/CreateReview";
 
 function MainPage() {
   const [hotels, setHotels] = useState([]);
@@ -60,9 +61,10 @@ function MainPage() {
     <div className="container">
       {authentication ? (
         <>
-          {/* <NavBar />
-          <Hotels hotels={hotels} /> */}
+          <NavBar />
+          {/* <Hotels hotels={hotels} /> */}
           <MyAccount hotels={hotels} isauth={setAuthentication} />
+          {/* <CreateReview /> */}
         </>
       ) : (
         <WelcomePage />

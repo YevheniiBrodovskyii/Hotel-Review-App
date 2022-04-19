@@ -6,7 +6,6 @@ import {
   deleteDoc,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 import "./hotel.sass";
-import MyAccount from "../MyAccount/MyAccount";
 
 function Hotel(props) {
   const {

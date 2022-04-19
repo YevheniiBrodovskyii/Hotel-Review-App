@@ -29,11 +29,15 @@ function MyAccount(props) {
     userInfo();
   }, []);
   return (
-    <div>
-      <h3>Hi, {userEmail}</h3>
-      <button onClick={logout}>Logout...</button>
-      <h4>Your reviews:</h4>
-      <hr />
+    <div className="MyAccount">
+      <h3 className="MyAccount_title">Hi, {userEmail}</h3>
+      <div className="MyAccount_logout-container">
+        <button className="MyAccount_logout" onClick={logout}>
+          Logout...
+        </button>
+      </div>
+      <hr className="MyAccount_hr" />
+      <h4 className="MyAccount_subtitle">Your reviews:</h4>
       <div className="Hotels">
         {hotels.map((hotel) => (
           <Hotel
