@@ -4,7 +4,7 @@
     background-color: #FFFFFF
     border-radius: 30px
     &-container
-        padding: 50px 0 0 0
+        padding: 50px 0 50px 0
     &__wrapper
         display: grid
         width: 80%
@@ -33,6 +33,7 @@
         &-title
             margin: 30px 0 10px 0
             font-size: 25px
+            font-weight: 900
     &__btn , &__btn_2
         font-size: 30px
         background-color: #000000
@@ -42,3 +43,25 @@
         width: 150px
         height: 60px
         margin: 50px auto 50px auto
+
+@media ( max-width: 1200px)
+    .Welcome_page
+        width: 85%
+        &__title
+            font-size: 30px
+            padding-top: 20px
+            margin-bottom: 15px
+        &__subtitle
+            font-size: 25px
+        &__input
+            font-size: 13px
+            height: 25px
+            padding: 7px 10px 7px 20px
+            &-title
+                margin: 20px 0 10px 0
+                font-size: 18px
+        &__btn , &__btn_2
+            font-size: 15px
+            width: 90%
+            height: 40px
+            margin: 30px auto 30px auto

@@ -1,5 +1,27 @@
 .Hotels
-    display: grid
-    grid-template-columns: repeat(auto-fill, minmax(440px, 1fr))
-    row-gap: 4rem
-    padding: 150px 0 100px 0
+    padding: 100px 0 100px 0
+    &_title
+        font-size: 50px
+        text-align: center
+        color: white
+        text-shadow: 9px -3px 5px rgba(0, 0, 0, 0.46)
+    &_hr
+        width: 40%
+        margin: 10px auto 50px auto
+    &_wrapper
+        display: grid
+        grid-template-columns: repeat(auto-fill, minmax(440px, 1fr))
+        row-gap: 4rem
+
+@media ( min-width:320px) and ( max-width:480px)
+
+    .Hotels
+        padding: 20px 0 100px 0
+        &_title
+            font-size: 30px
+        &_hr
+            width: 70%
+            margin: 10px auto 30px auto
+        &_wrapper
+            grid-template-columns: 1fr
+            row-gap: 4rem

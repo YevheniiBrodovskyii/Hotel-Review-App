@@ -1,11 +1,6 @@
 import { useState } from "react";
-import { firebaseConfig, app, db, auth } from "../../firebaseConfig";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { auth } from "../../firebaseConfig";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 import { Hotels } from "../Hotels/Hotels";
 
@@ -16,7 +11,7 @@ function SignUpPage(props) {
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
   const [inputPass2, setInputPass2] = useState("");
-  const [isSignUp, setSignUp] = useState(false);
+  const { isSignUp } = useState(false);
   const [error, isError] = useState(false);
 
   function signUp() {

@@ -3,12 +3,10 @@ import "./welcomePage.sass";
 
 import SignUpPage from "../SignUpPage/SignUpPage";
 import MainPage from "../MainPage";
-import { firebaseConfig, app, db, auth } from "../../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import {
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
-  signOut,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 function WelcomePage() {

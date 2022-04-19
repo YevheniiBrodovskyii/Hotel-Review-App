@@ -1,19 +1,11 @@
 import { useState, useEffect } from "react";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  getFirestore,
   collection,
   getDocs,
-  addDoc,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-import { firebaseConfig, app, db, auth } from "../firebaseConfig";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { db, auth } from "../firebaseConfig";
 
 import { Hotels } from "./Hotels/Hotels";
 import WelcomePage from "./WelcomePage/WelcomePage";
@@ -42,7 +34,6 @@ function MainPage() {
   function isAuthenticated() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const uid = user.uid;
         setAuthentication(true);
         console.log("User is signed in");
         return user;
@@ -58,16 +49,38 @@ function MainPage() {
   }, []);
 
   return (
-    <div className="container">
+    <div>
       {authentication ? (
-        <>
+        <BrowserRouter>
           <NavBar />
-          {/* <Hotels hotels={hotels} /> */}
-          <MyAccount hotels={hotels} isauth={setAuthentication} />
-          {/* <CreateReview /> */}
-        </>
+          <div className="container">
+            <Routes>
+              <Route
+                exact
+                path="/CreateReview"
+                element={<CreateReview />}
+              ></Route>
+              <Route
+                index
+                exact
+                path="/Hotels"
+                element={<Hotels hotels={hotels} />}
+              ></Route>
+              <Route
+                exact
+                path="/MyAccount"
+                element={
+                  <MyAccount hotels={hotels} isauth={setAuthentication} />
+                }
+              ></Route>
+              <Route path="*" element={<Hotels hotels={hotels} />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
       ) : (
-        <WelcomePage />
+        <div className="container">
+          <WelcomePage />
+        </div>
       )}
     </div>
   );

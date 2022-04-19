@@ -7,9 +7,13 @@ function Hotels(props) {
 
   return (
     <div className="Hotels">
-      {hotels.map((hotel, id) => (
-        <Hotel key={id} {...hotel} />
-      ))}
+      <h2 className="Hotels_title">All reviews</h2>
+      <hr className="Hotels_hr" />
+      <div className="Hotels_wrapper">
+        {hotels.map((hotel, id) => (
+          <Hotel key={id} {...hotel} />
+        ))}
+      </div>
     </div>
   );
 }

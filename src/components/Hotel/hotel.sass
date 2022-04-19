@@ -38,3 +38,26 @@
     font-size: 25px
     padding-left: 3px
     color: #e9bb26
+
+@media ( min-width:320px) and ( max-width:480px)
+
+    .Hotel_card
+        max-height: unset
+        width: 90%
+        &_wrapper
+            margin: 15px 0 15px 0
+            display: grid
+            grid-template-row: 80px 80px 80px 80px
+            grid-template-columns: unset
+            column-gap: 5%
+        &-img
+            grid-row: 1/3
+        &-localization
+            margin: 10px 0
+            grid-row: 3/4
+            text-align: center
+        &-stars
+            grid-row: 4/5
+            padding: 0 15px 0 15px
+            display: flex
+            justify-content: center

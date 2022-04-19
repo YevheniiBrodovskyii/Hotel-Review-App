@@ -1,5 +1,4 @@
 import starsMap from "../../starsMap";
-import { useEffect, useState } from "react";
 import { db } from "../../firebaseConfig";
 import {
   doc,
@@ -11,7 +10,6 @@ function Hotel(props) {
   const {
     name,
     img,
-    localization,
     stars,
     review,
     author,
