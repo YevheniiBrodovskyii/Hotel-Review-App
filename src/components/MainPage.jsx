@@ -1,23 +1,16 @@
 import { useState, useEffect } from "react";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+
 import {
-  getFirestore,
   collection,
   getDocs,
-  addDoc,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-import { firebaseConfig, app, db, auth } from "../firebaseConfig";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { db, auth } from "../firebaseConfig";
 
 import { Hotels } from "./Hotels/Hotels";
 import WelcomePage from "./WelcomePage/WelcomePage";
 import NavBar from "./NavBar/NavBar";
+import CreateReview from "./CreateReview/CreateReview";
 
 function MainPage() {
   const [hotels, setHotels] = useState([]);
@@ -40,8 +33,7 @@ function MainPage() {
   function isAuthenticated() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const uid = user.uid;
-        setAuthentication(false);
+        setAuthentication(true);
         console.log("User is signed in");
       } else {
         setAuthentication(false);
@@ -59,7 +51,8 @@ function MainPage() {
       {authentication ? (
         <>
           <NavBar />
-          <Hotels hotels={hotels} />
+          {/* <Hotels hotels={hotels} /> */}
+          <CreateReview />
         </>
       ) : (
         <WelcomePage />

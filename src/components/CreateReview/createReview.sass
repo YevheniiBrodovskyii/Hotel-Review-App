@@ -1,0 +1,122 @@
+.Create_card
+    padding-top: 150px
+    &-title
+        color: white
+        font-weight: 200
+        font-size: 40px
+        text-align: center
+    &-hr
+        width: 30%
+        margin: 0 auto
+    &-form
+        width: 50%
+        display: grid
+        grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr
+        margin: 50px auto 0 auto
+        row-gap: 50px
+    &-input
+        grid-column: 1/4
+        height: 50px
+        color: rgba(255, 255, 255, 0.6)
+        font-size: 25px
+        text-align: center
+        background-color: rgba(0, 0, 0, 0.33)
+        border-radius: 25px
+        border: 1px solid #FFFFFF
+        &--photo
+            grid-column: 2/3
+    &-location
+        width: 30%
+        margin: 0 auto
+        grid-column: 1/2
+        &--2
+            width: 30%
+            margin: 0 auto
+            grid-column: 2/3
+        &--container
+            grid-column: 1/4
+            display: grid
+            grid-template-columns: 1fr 1fr
+    &-stars
+        grid-column: 2/3
+        display: flex
+        justify-content: center
+        flex-direction: row-reverse
+        overflow: hidden
+        width: 100%
+        border: 1px solid #FFFFFF
+        background-color: rgba(0, 0, 0, 0.33)
+        border-radius: 25px
+        &:not(:checked)
+            & > input
+                display: none
+            & > label
+                cursor: pointer
+                padding: 5px 2px 7px 2px
+                font-size: 32px
+                line-height: 32px
+                color: lightgrey
+                text-shadow: 1px 1px #bbb
+                &:before
+                    content: '★'
+        & > input
+            &:checked
+                & ~ label
+                    color: gold
+                    text-shadow: 1px 1px #c60
+    &-review
+        grid-column: 1/4
+        min-height: 100px
+    &_btn
+        font-weight: 700
+        font-size: 25px
+        width: 80%
+        height: 50px
+        margin: 0 auto
+        grid-column: 2/3
+        background-color: #DAAD86
+        border-radius: 30px
+        cursor: pointer
+        transition: 0.5s all
+        &:hover
+            transform: scale(1.03)
+            background-color: #41ad2e
+
+        &--container
+            grid-column: 2/3
+            display: flex
+            justify-content: center
+            overflow: hidden
+            width: 265px
+            margin: 0 auto
+            &:not(:checked)
+                & > input
+                    display: none
+                & > label
+                    float: right
+                    width: 42px
+                    padding: 0
+                    cursor: pointer
+                    font-size: 32px
+                    line-height: 32px
+                    color: lightgrey
+                    text-shadow: 1px 1px #bbb
+                    &:before
+                        content: '★'
+            & > input
+                &:checked
+                    & ~ label
+                        color: gold
+                        text-shadow: 1px 1px #c60
+
+// STARS STYLE
+.Create_card-stars:not(:checked) > label:hover,
+.Create_card-stars:not(:checked) > label:hover ~ label
+    color: gold
+.Create_card-stars > input:checked + label:hover,
+.Create_card-stars > input:checked + label:hover ~ label,
+.Create_card-stars > input:checked ~ label:hover,
+.Create_card-stars > input:checked ~ label:hover ~ label,
+.Create_card-stars > label:hover ~ input:checked ~ label
+    color: gold
+    text-shadow: 1px 1px goldenrod

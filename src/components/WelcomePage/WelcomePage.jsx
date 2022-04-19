@@ -3,12 +3,10 @@ import "./welcomePage.sass";
 
 import SignUpPage from "../SignUpPage/SignUpPage";
 import MainPage from "../MainPage";
-import { firebaseConfig, app, db, auth } from "../../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import {
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
-  signOut,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 function WelcomePage() {
@@ -18,8 +16,6 @@ function WelcomePage() {
   const [authenticated, isAuthenticated] = useState(false);
   const [error, isError] = useState(false);
 
-  // const [login, toLogin] = useState(false);
-
   function signUpClick() {
     toSignUp(true);
   }
@@ -27,12 +23,12 @@ function WelcomePage() {
   function loginClick() {
     onAuthStateChanged(auth, (user) => {
       if (user != null) {
-        console.log("OK");
+        console.log("User logged in");
         isAuthenticated(true);
       } else {
         signInWithEmailAndPassword(auth, inputEmail, inputPass);
         isError(true);
-        console.log("raz raz raz");
+        console.log("User logged out");
       }
     });
   }
