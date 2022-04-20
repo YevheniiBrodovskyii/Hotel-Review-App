@@ -3,16 +3,15 @@ import { auth } from "../../firebaseConfig";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 
 import Hotels from "../Hotels/Hotels";
-
+import { connect } from "react-redux";
 import "./signUpPage.sass";
+import { toSignUp, showSignUpError } from "../../index";
 
 function SignUpPage(props) {
-  const { back } = props;
-  const { isSignUp } = useState(false);
+  const { isSignUp, error } = props;
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
   const [inputPass2, setInputPass2] = useState("");
-  const [error, isError] = useState(false);
 
   function signUp() {
     if (inputPass === inputPass2 || inputPass !== "") {
@@ -24,11 +23,14 @@ function SignUpPage(props) {
         .catch((error) => {
           const errorMessage = error.message;
           console.log(errorMessage);
-          isError(true);
+          showSignUpError(true);
         });
     }
   }
-
+  function hideErrorAndBack() {
+    toSignUp(false);
+    showSignUpError(false);
+  }
   return (
     <div>
       {isSignUp ? (
@@ -98,7 +100,7 @@ function SignUpPage(props) {
               )}
               <button
                 className="Welcome_page__btn red"
-                onClick={() => back(false)}
+                onClick={() => hideErrorAndBack()}
               >
                 Back...
               </button>
@@ -112,5 +114,9 @@ function SignUpPage(props) {
     </div>
   );
 }
-
-export default SignUpPage;
+const mapStateToProps = (state) => ({
+  isauth: state.authenticated,
+  signUp: state.signUp,
+  error: state.errorSignUp,
+});
+export default connect(mapStateToProps)(SignUpPage);

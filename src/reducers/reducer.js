@@ -2,7 +2,10 @@ const initialState = {
     user: null,
     authenticated: false,
     hotels: [],
-    signUp: false
+    signUp: false,
+    back: false,
+    errorSignUp: false,
+    errorLogin: false
 }
 
 const reducer = (state=initialState, action) => {
@@ -22,6 +25,21 @@ const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 signUp: action.signUp
+            }
+        case "BACK":
+            return {
+                ...state,
+                back: action.back
+            }
+        case "SIGNUPERROR":
+            return {
+                ...state,
+                errorSignUp: action.error
+            }
+        case "LOGINERROR":
+            return {
+                ...state,
+                errorLogin: action.error
             }
         default:
             return state

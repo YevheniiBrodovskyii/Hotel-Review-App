@@ -1,4 +1,5 @@
-const AUTHENTICATION = (user, authenticated) => {
+
+const authenticate = (user, authenticated) => {
     return {
         "type": "AUTH",
         "user": user,
@@ -19,4 +20,24 @@ const toSignUp = (signUp) => {
         "signUp": signUp
     }
 }
-export {AUTHENTICATION, fetchHotels, toSignUp}
+const toBack = (back) => {
+    return {
+        "type": "BACK",
+        "back": back
+    }
+}
+const showSignUpError = (error) => {
+    return {
+        "type": "SIGNUPERROR",
+        "error": error
+    }
+}
+
+const showLoginError = (error) => {
+    return {
+        "type": "LOGINERROR",
+        "error": error
+    }
+}
+
+export {authenticate, fetchHotels, toSignUp,toBack, showSignUpError, showLoginError}

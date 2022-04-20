@@ -8,39 +8,39 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { connect } from "react-redux";
+import { authenticate, toSignUp, showLoginError } from "../../index";
 
-function WelcomePage() {
-  const [signUp, toSignUp] = useState(false);
+function WelcomePage({ isauth, signUp, error }) {
+  // const [signUp, toSignUp] = useState(false);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
-  const [authenticated, isAuthenticated] = useState(false);
-  const [error, isError] = useState(false);
 
   function signUpClick() {
+    showLoginError(false);
     toSignUp(true);
   }
 
   function loginClick() {
     onAuthStateChanged(auth, (user) => {
-      if (user != null) {
+      if (user == null) {
         console.log("User logged in");
-        isAuthenticated(true);
+        authenticate(user, false);
       } else {
         signInWithEmailAndPassword(auth, inputEmail, inputPass);
-        isError(true);
+        showLoginError(true);
         console.log("User logged out");
       }
     });
   }
-
   return (
     <div>
-      {authenticated ? (
+      {isauth ? (
         <MainPage />
       ) : (
         <div>
           {signUp ? (
-            <SignUpPage isOpen={toSignUp} back={toSignUp} />
+            <SignUpPage />
           ) : (
             <div className="Welcome_page-container">
               <div className="Welcome_page animate__animated animate__fadeIn">
@@ -104,5 +104,9 @@ function WelcomePage() {
     </div>
   );
 }
-
-export default WelcomePage;
+const mapStateToProps = (state) => ({
+  isauth: state.authenticated,
+  signUp: state.signUp,
+  error: state.errorLogin,
+});
+export default connect(mapStateToProps)(WelcomePage);

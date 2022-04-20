@@ -13,32 +13,30 @@ import CreateReview from "./CreateReview/CreateReview";
 import MyAccount from "./MyAccount/MyAccount";
 import WelcomePage from "./WelcomePage/WelcomePage";
 import NavBar from "./NavBar/NavBar";
-
-function MainPage() {
-  const [hotels, setHotels] = useState([]);
-  const [authentication, setAuthentication] = useState(false);
-
-  async function fetchHotels() {
+import { authenticate, fetchHotels } from "../index";
+import { connect } from "react-redux";
+function MainPage({ isauth, hotels }) {
+  async function saveHotels() {
     const _hotels = [];
     const querySnapshot = await getDocs(collection(db, "reviews"));
     querySnapshot.forEach((doc) => {
       _hotels.push(doc.data());
     });
     console.log("Data is fetched!");
-    setHotels(_hotels);
+    fetchHotels(_hotels);
   }
 
   useEffect(() => {
-    fetchHotels();
+    saveHotels();
   }, []);
 
   function isAuthenticated() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setAuthentication(true);
+        authenticate(user, false);
         console.log("User is signed in");
       } else {
-        setAuthentication(false);
+        authenticate(null, false);
         console.log("User is signed out");
       }
     });
@@ -50,7 +48,7 @@ function MainPage() {
 
   return (
     <div>
-      {authentication ? (
+      {isauth ? (
         <BrowserRouter>
           <NavBar />
           <div className="container">
@@ -79,5 +77,8 @@ function MainPage() {
     </div>
   );
 }
-
-export default MainPage;
+const mapStateToProps = (state) => ({
+  isauth: state.authenticated,
+  hotels: state.hotels,
+});
+export default connect(mapStateToProps)(MainPage);
