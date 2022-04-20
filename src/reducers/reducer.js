@@ -10,7 +10,11 @@ const initialState = {
     singUpPassword: "",
     singUpPassword2: "",
     loginEmail: "",
-    loginPassword: ""
+    loginPassword: "",
+    map: false,
+    mapId: null,
+    toPhoto: false,
+    photoRef: null
 }
 
 const reducer = (state=initialState, action) => {
@@ -30,9 +34,6 @@ const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 signUp: action.signUp,
-                singUpLogin: action.login,
-                singUpPassword: action.password,
-                singUpPassword2: action.password
             }
         case "SETSIGNUPLOGIN":
             return {
@@ -59,6 +60,17 @@ const reducer = (state=initialState, action) => {
                 ...state,
                 "loginPassword": action.loginPassword,
             }
+        case "TAKEPHOTO":
+            return {
+                ...state,
+                "toPhoto": action.toPhoto
+            }
+        case "SHOWMAP":
+            return {
+                ...state,
+                "mapId": action.mapId,
+                "map": action.map
+            }
         case "BACK":
             return {
                 ...state,
@@ -73,6 +85,11 @@ const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 errorLogin: action.error
+            }
+        case "CREATEPHOTOREF":
+            return {
+                ...state,
+                photoRef: action.photoRef
             }
         default:
             return state

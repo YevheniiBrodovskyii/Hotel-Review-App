@@ -18,7 +18,7 @@ import {
 const container = document.getElementById('root');
 const root = createRoot(container);
 const {dispatch} = store;
-const {authenticate, fetchHotels, toSignUp, toBack, 
+const {authenticate, fetchHotels, toSignUp, toBack, showMap, toTakePhoto, createPhotoRef,
   showSignUpError, showLoginError, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword} = bindActionCreators(actions, dispatch);
 
 // Firebase Functions:
@@ -31,6 +31,10 @@ async function saveHotels() {
   console.log("Data is fetched!");
   fetchHotels(_hotels);
 }
+
+setInterval(() => {
+  saveHotels();
+}, 15000)
 
 async function deleteReview(id) {
   console.log(`Trying to delete object with id=${id}`);
@@ -101,7 +105,7 @@ root.render(<Provider store={store}>
 
 
 serviceWorkerRegistration.register();
-export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError, logout, deleteReview,
+export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError, logout, deleteReview,showMap, toTakePhoto, createPhotoRef,
    showLoginError, saveHotels, isAuthenticated, signUp, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, loginClick}
 
 

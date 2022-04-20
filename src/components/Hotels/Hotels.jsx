@@ -1,4 +1,4 @@
-import { Hotel } from "../Hotel/Hotel";
+import Hotel from "../Hotel/Hotel";
 
 import "./hotels.sass";
 

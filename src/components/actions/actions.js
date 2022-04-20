@@ -70,4 +70,25 @@ const showLoginError = (error) => {
     }
 }
 
-export {authenticate, fetchHotels, toSignUp,toBack, showSignUpError, showLoginError, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword}
+const showMap = (map, id) => {
+    return {
+        "type": "SHOWMAP",
+        "mapId": id,
+        "map": map
+    }
+}
+
+const toTakePhoto = (toPhoto) => {
+    return {
+        "type": "TAKEPHOTO",
+        "toPhoto": toPhoto
+    }
+}
+
+const createPhotoRef = (photoRef) => {
+    return {
+        "type": "CREATEPHOTOREF",
+        "photoRef": photoRef
+    }
+}
+export {createPhotoRef, authenticate, toTakePhoto, showMap, fetchHotels, toSignUp,toBack, showSignUpError, showLoginError, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword}
