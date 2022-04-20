@@ -1,38 +1,23 @@
-import { useState } from "react";
 import "./welcomePage.sass";
-
 import SignUpPage from "../SignUpPage/SignUpPage";
 import MainPage from "../MainPage";
-import { auth } from "../../firebaseConfig";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 import { connect } from "react-redux";
-import { authenticate, toSignUp, showLoginError } from "../../index";
+import {
+  toSignUp,
+  showLoginError,
+  setLoginEmail,
+  setLoginPassword,
+  loginClick,
+} from "../../index";
 
-function WelcomePage({ isauth, signUp, error }) {
-  // const [signUp, toSignUp] = useState(false);
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPass, setInputPass] = useState("");
+function WelcomePage(props) {
+  const { isauth, signUp, error, loginEmail, loginPassword } = props;
 
   function signUpClick() {
     showLoginError(false);
     toSignUp(true);
   }
 
-  function loginClick() {
-    onAuthStateChanged(auth, (user) => {
-      if (user == null) {
-        console.log("User logged in");
-        authenticate(user, false);
-      } else {
-        signInWithEmailAndPassword(auth, inputEmail, inputPass);
-        showLoginError(true);
-        console.log("User logged out");
-      }
-    });
-  }
   return (
     <div>
       {isauth ? (
@@ -56,8 +41,8 @@ function WelcomePage({ isauth, signUp, error }) {
                     E-mail:
                   </label>
                   <input
-                    value={inputEmail}
-                    onInput={(e) => setInputEmail(e.target.value)}
+                    value={loginEmail}
+                    onInput={(e) => setLoginEmail(e.target.value)}
                     className="Welcome_page__input"
                     id="welcome_mail"
                     type="email"
@@ -77,8 +62,8 @@ function WelcomePage({ isauth, signUp, error }) {
                     Password:
                   </label>
                   <input
-                    value={inputPass}
-                    onInput={(e) => setInputPass(e.target.value)}
+                    value={loginPassword}
+                    onInput={(e) => setLoginPassword(e.target.value)}
                     className="Welcome_page__input"
                     id="welcome_pass"
                     type="password"
@@ -108,5 +93,7 @@ const mapStateToProps = (state) => ({
   isauth: state.authenticated,
   signUp: state.signUp,
   error: state.errorLogin,
+  loginEmail: state.loginEmail,
+  loginPassword: state.loginPassword,
 });
 export default connect(mapStateToProps)(WelcomePage);

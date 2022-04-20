@@ -1,32 +1,19 @@
-import { useState } from "react";
-import { auth } from "../../firebaseConfig";
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-
 import Hotels from "../Hotels/Hotels";
 import { connect } from "react-redux";
 import "./signUpPage.sass";
-import { toSignUp, showSignUpError } from "../../index";
+import {
+  toSignUp,
+  showSignUpError,
+  signUp,
+  setSignUpLogin,
+  setSignUpPassword,
+  setSignUpPassword2,
+} from "../../index";
 
 function SignUpPage(props) {
-  const { isSignUp, error } = props;
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPass, setInputPass] = useState("");
-  const [inputPass2, setInputPass2] = useState("");
+  const { isSignUp, error, singUpLogin, singUpPassword, singUpPassword2 } =
+    props;
 
-  function signUp() {
-    if (inputPass === inputPass2 || inputPass !== "") {
-      createUserWithEmailAndPassword(auth, inputEmail, inputPass)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          console.log(errorMessage);
-          showSignUpError(true);
-        });
-    }
-  }
   function hideErrorAndBack() {
     toSignUp(false);
     showSignUpError(false);
@@ -48,8 +35,8 @@ function SignUpPage(props) {
                 E-mail:
               </label>
               <input
-                value={inputEmail}
-                onInput={(e) => setInputEmail(e.target.value)}
+                value={singUpLogin}
+                onInput={(e) => setSignUpLogin(e.target.value)}
                 className="Welcome_page__input"
                 id="welcome_mail"
                 type="email"
@@ -67,8 +54,8 @@ function SignUpPage(props) {
                 Password:
               </label>
               <input
-                value={inputPass}
-                onInput={(e) => setInputPass(e.target.value)}
+                value={singUpPassword}
+                onInput={(e) => setSignUpPassword(e.target.value)}
                 className="Welcome_page__input"
                 id="welcome_pass"
                 type="password"
@@ -84,8 +71,8 @@ function SignUpPage(props) {
                 htmlFor="welcome_pass"
               ></label>
               <input
-                value={inputPass2}
-                onInput={(e) => setInputPass2(e.target.value)}
+                value={singUpPassword2}
+                onInput={(e) => setSignUpPassword2(e.target.value)}
                 className="Welcome_page__input"
                 id="welcome_pass_repeat"
                 type="password"
@@ -104,7 +91,7 @@ function SignUpPage(props) {
               >
                 Back...
               </button>
-              <button className="Welcome_page__btn" onClick={signUp}>
+              <button className="Welcome_page__btn" onClick={() => signUp()}>
                 Sign Up
               </button>
             </div>
@@ -118,5 +105,8 @@ const mapStateToProps = (state) => ({
   isauth: state.authenticated,
   signUp: state.signUp,
   error: state.errorSignUp,
+  singUpLogin: state.singUpLogin,
+  singUpPassword: state.singUpPassword,
+  singUpPassword2: state.singUpPassword2,
 });
 export default connect(mapStateToProps)(SignUpPage);

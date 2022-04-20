@@ -14,10 +14,40 @@ const fetchHotels = (hotels) => {
     }
 }
 
-const toSignUp = (signUp) => {
+const toSignUp = (signUp, login, password, password2) => {
     return {
         "type": "SIGNUP",
-        "signUp": signUp
+        "signUp": signUp,
+    }
+}
+const setSignUpLogin = (login) => {
+    return {
+        "type": "SETSIGNUPLOGIN",
+        "signUpLogin": login,
+    }
+}
+const setSignUpPassword = (password) => {
+    return {
+        "type": "SETSIGNUPPASSWORD",
+        "signUpPassword": password,
+    }
+}
+const setSignUpPassword2 = (password) => {
+    return {
+        "type": "SETSIGNUPPASSWORD2",
+        "signUpPassword2": password,
+    }
+}
+const setLoginEmail = (login) => {
+    return {
+        "type": "SETLOGINEMAIL",
+        "loginEmail": login,
+    }
+}
+const setLoginPassword = (password) => {
+    return {
+        "type": "SETLOGINPASSWORD",
+        "loginPassword": password,
     }
 }
 const toBack = (back) => {
@@ -40,4 +70,4 @@ const showLoginError = (error) => {
     }
 }
 
-export {authenticate, fetchHotels, toSignUp,toBack, showSignUpError, showLoginError}
+export {authenticate, fetchHotels, toSignUp,toBack, showSignUpError, showLoginError, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword}

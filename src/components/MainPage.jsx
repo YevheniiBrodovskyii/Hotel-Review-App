@@ -1,46 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import {
-  collection,
-  getDocs,
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
-import { db, auth } from "../firebaseConfig";
-
 import Hotels from "./Hotels/Hotels";
 import CreateReview from "./CreateReview/CreateReview";
 import MyAccount from "./MyAccount/MyAccount";
 import WelcomePage from "./WelcomePage/WelcomePage";
 import NavBar from "./NavBar/NavBar";
-import { authenticate, fetchHotels } from "../index";
+import { saveHotels, isAuthenticated } from "../index";
 import { connect } from "react-redux";
-function MainPage({ isauth, hotels }) {
-  async function saveHotels() {
-    const _hotels = [];
-    const querySnapshot = await getDocs(collection(db, "reviews"));
-    querySnapshot.forEach((doc) => {
-      _hotels.push(doc.data());
-    });
-    console.log("Data is fetched!");
-    fetchHotels(_hotels);
-  }
 
+function MainPage({ isauth, hotels }) {
   useEffect(() => {
     saveHotels();
   }, []);
-
-  function isAuthenticated() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        authenticate(user, false);
-        console.log("User is signed in");
-      } else {
-        authenticate(null, false);
-        console.log("User is signed out");
-      }
-    });
-  }
 
   useEffect(() => {
     isAuthenticated();
