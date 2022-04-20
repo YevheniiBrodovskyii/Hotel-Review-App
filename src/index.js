@@ -11,6 +11,8 @@ import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndP
 import {
   collection,
   getDocs,
+  deleteDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
 
 const container = document.getElementById('root');
@@ -24,10 +26,16 @@ async function saveHotels() {
   const _hotels = [];
   const querySnapshot = await getDocs(collection(db, "reviews"));
   querySnapshot.forEach((doc) => {
-    _hotels.push(doc.data());
+    _hotels.push([doc.id, doc.data()]);
   });
   console.log("Data is fetched!");
   fetchHotels(_hotels);
+}
+
+async function deleteReview(id) {
+  console.log(`Trying to delete object with id=${id}`);
+  await deleteDoc(doc(db, "reviews", id));
+  saveHotels();
 }
 
 function isAuthenticated() {
@@ -93,7 +101,7 @@ root.render(<Provider store={store}>
 
 
 serviceWorkerRegistration.register();
-export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError, logout,
+export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError, logout, deleteReview,
    showLoginError, saveHotels, isAuthenticated, signUp, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, loginClick}
 
 
