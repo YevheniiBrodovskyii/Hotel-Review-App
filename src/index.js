@@ -7,7 +7,7 @@ import store from  "./store";
 import * as actions from "./components/actions/actions"
 import { bindActionCreators } from 'redux';
 import { db, auth } from "./firebaseConfig";
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 import {
   collection,
   getDocs,
@@ -43,19 +43,19 @@ function isAuthenticated() {
 }
 
 function loginClick() {
-  var inputEmail = store.getState().loginEmail
-  var inputPass = store.getState().loginPassword
-  onAuthStateChanged(auth, (user) => {
-    if (user != null) {
+  let inputEmail = store.getState().loginEmail
+  let inputPass = store.getState().loginPassword
+  signInWithEmailAndPassword(auth, inputEmail, inputPass)
+    .then((userCredential) => {
       console.log("User logged in");
-      authenticate(user, true);
+      authenticate(userCredential.user, true);
       setLoginEmail("")
       setLoginPassword("")
-    } else {
-      signInWithEmailAndPassword(auth, inputEmail, inputPass);
-      showLoginError(true);
-      console.log("User logged out");
-    }
+      showLoginError(false)
+  })
+  .catch((error) => {
+    showLoginError(true);
+    console.log("User logged out");
   });
 }
 
@@ -81,13 +81,19 @@ function signUp() {
   }
 }
 
+function logout() {
+  signOut(auth);
+  authenticate(null, false);
+  console.log("Successful logout");
+}
+
 root.render(<Provider store={store}>
     <App />
   </Provider>);
 
 
 serviceWorkerRegistration.register();
-export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError,
+export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError, logout,
    showLoginError, saveHotels, isAuthenticated, signUp, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, loginClick}
 
 
