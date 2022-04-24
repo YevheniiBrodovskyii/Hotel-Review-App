@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Hotel-Review-App/static/css/main.696d7d1f.css",
-    "main.js": "/Hotel-Review-App/static/js/main.20e58993.js",
+    "main.js": "/Hotel-Review-App/static/js/main.9cf97116.js",
     "static/media/background.png": "/Hotel-Review-App/static/media/background.34ac5029ae11f6c4c096.png",
     "service-worker.js": "/Hotel-Review-App/service-worker.js",
     "index.html": "/Hotel-Review-App/index.html",
     "main.696d7d1f.css.map": "/Hotel-Review-App/static/css/main.696d7d1f.css.map",
-    "main.20e58993.js.map": "/Hotel-Review-App/static/js/main.20e58993.js.map"
+    "main.9cf97116.js.map": "/Hotel-Review-App/static/js/main.9cf97116.js.map"
   },
   "entrypoints": [
     "static/css/main.696d7d1f.css",
-    "static/js/main.20e58993.js"
+    "static/js/main.9cf97116.js"
   ]
 }
