@@ -3,7 +3,7 @@
     "background_color": "#FBEEC1",
     "display": "standalone",
     "scope": "/",
-    "start_url": "/",
+    "start_url": "https://YevheniiBrodovskyii.github.io/Hotel-Review-App",
     "short_name": "Hotel App",
     "name": "Hotel Review App",
     "description": "Made by Yevhenii Brodovskyi",
