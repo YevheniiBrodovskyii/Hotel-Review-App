@@ -25,7 +25,11 @@ function MainPage({ isauth, hotels, loaded }) {
       ) : (
         <div>
           {isauth ? (
-            <BrowserRouter>
+            <BrowserRouter
+              basename="/
+            Hotel-Review-App
+            "
+            >
               <NavBar />
               <div className="container">
                 <Routes>
