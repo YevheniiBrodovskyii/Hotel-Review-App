@@ -7,7 +7,7 @@ import store from  "./store";
 import * as actions from "./components/actions/actions"
 import { bindActionCreators } from 'redux';
 import { db, auth, storage  } from "./firebaseConfig";
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import {
   collection,
   getDocs,
@@ -15,11 +15,11 @@ import {
   doc,
   updateDoc, 
   addDoc
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+} from "firebase/firestore/lite";
 import {
   uploadBytes,
   ref
-} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-storage.js";
+} from "firebase/storage";
 
 const container = document.getElementById('root');
 const root = createRoot(container);

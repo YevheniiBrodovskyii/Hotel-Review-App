@@ -28,6 +28,7 @@ function CreateReview(props) {
   const [errorReviewSymbols, isErrorReviewSymbols] = useState(false);
   const [errorNameEmpty, isErrorNameEmpty] = useState(false);
   const [errorReviewEmpty, isErrorReviewEmpty] = useState(false);
+  const [errorReviewOverfill, isErrorReviewOverfill] = useState(false);
 
   function takeGeoposition() {
     navigator.geolocation.getCurrentPosition(success, error);
@@ -71,8 +72,10 @@ function CreateReview(props) {
                 }
                 setHotelNameForm(e.target.value);
               }}
-              onClick={() => {
-                isErrorNameEmpty(true);
+              onClick={(e) => {
+                if (e.target.value === "") {
+                  isErrorNameEmpty(true);
+                }
               }}
             />
             {errorNameEmpty ? (
@@ -91,7 +94,10 @@ function CreateReview(props) {
             )}
             {photoRef ? (
               <div className="Create_card-input--photo">
-                <i class="fa fa-check fa-check-cr fa-xl" aria-hidden="true"></i>
+                <i
+                  className="fa fa-check fa-check-cr fa-xl"
+                  aria-hidden="true"
+                ></i>
               </div>
             ) : (
               <div className="Create_card-input--photo">
@@ -105,7 +111,10 @@ function CreateReview(props) {
               </div>
             )}
             {photoIsChosen ? (
-              <i class="fa fa-check fa-check-cr-2 fa-xl" aria-hidden="true"></i>
+              <i
+                className="fa fa-check fa-check-cr-2 fa-xl"
+                aria-hidden="true"
+              ></i>
             ) : (
               <button
                 className="Create_card_upload"
@@ -198,13 +207,20 @@ function CreateReview(props) {
                 } else if (!validSymbols.test(e.target.value)) {
                   isErrorReviewSymbols(true);
                   isErrorReviewEmpty(false);
+                } else if (e.target.value > 400) {
+                  isErrorReviewOverfill(true);
                 } else {
                   isErrorReviewEmpty(false);
                   isErrorReviewSymbols(false);
+                  isErrorReviewOverfill(false);
                 }
                 setReviewForm(e.target.value);
               }}
-              onClick={() => isErrorReviewEmpty(true)}
+              onClick={(e) => {
+                if (e.target.value === "") {
+                  isErrorReviewEmpty(true);
+                }
+              }}
             />
             {errorReviewEmpty ? (
               <div className="Create_card_error">Review can't be empty!</div>
@@ -218,10 +234,18 @@ function CreateReview(props) {
             ) : (
               <></>
             )}
+            {errorReviewOverfill ? (
+              <div className="Create_card_error">
+                Review must not exceed 400 characters!
+              </div>
+            ) : (
+              <></>
+            )}
             {errorNameEmpty ||
             errorReviewEmpty ||
             errorNameSymbols ||
-            errorReviewSymbols ? (
+            errorReviewSymbols ||
+            errorReviewOverfill ? (
               <></>
             ) : (
               <input

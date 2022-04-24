@@ -6,11 +6,8 @@ import PopupMap from "../PopupMap/PopupMap";
 import "./hotel.sass";
 import { useEffect, useState } from "react";
 
-// import {
-//   ref,
-//   getDownloadURL,
-// } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-storage.js";
-// import { storage } from "../../firebaseConfig";
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebaseConfig";
 
 function Hotel(props) {
   const {
@@ -29,18 +26,18 @@ function Hotel(props) {
   const [photoSrc, setPhotoSrc] = useState("");
   const locatization = [_lat, _long];
 
-  // useEffect(() => {
-  //   getDownloadURL(ref(storage, img))
-  //     .then((url) => {
-  //       setPhotoSrc(url);
-  //     })
-  //     .catch((error) => {
-  //       // Handle any errors
-  //     });
-  // }, [photoSrc]);
+  useEffect(() => {
+    getDownloadURL(ref(storage, img))
+      .then((url) => {
+        setPhotoSrc(url);
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+  }, [photoSrc]);
   console.log(photoSrc);
   return (
-    <div>
+    <>
       {filter ? (
         <>
           {author === user.email ? (
@@ -66,7 +63,9 @@ function Hotel(props) {
                     </h3>
                     {starsMap.get(stars)}
                   </div>
-                  <div className="Hotel_card-review">{review}</div>
+                  <div className="Hotel_card-review">
+                    <p className="Hotel_card-review-content">{review}</p>
+                  </div>
                   <div className="Hotel_card-delete--wrapper">
                     <button
                       className="Hotel_card-delete"
@@ -83,7 +82,7 @@ function Hotel(props) {
           )}
         </>
       ) : (
-        <div>
+        <>
           {map && id === mapId ? (
             <PopupMap name={name} localization={locatization} />
           ) : (
@@ -105,13 +104,15 @@ function Hotel(props) {
                 </h3>
                 {starsMap.get(stars)}
               </div>
-              <div className="Hotel_card-review">{review}</div>
+              <div className="Hotel_card-review">
+                <p className="Hotel_card-review-content">{review}</p>
+              </div>
               <h5 className="Hotel_card-author">Wroten by {author}</h5>
             </div>
           )}
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 }
 const mapStateToProps = (state) => ({

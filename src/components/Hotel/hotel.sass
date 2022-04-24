@@ -37,11 +37,14 @@
         display: flex
         justify-content: center
     &-review
+        padding: 10px
         text-align: center
         border: 1px solid #000000
         border-radius: 30px
-        width: 100%
-        min-height: 170px
+        min-height: 150px
+        &-content
+            width: 100%
+            word-wrap: break-word
     &-author
         margin-top: 5px
         font-size: 13px
@@ -70,7 +73,7 @@
         &_wrapper
             margin: 15px 0 15px 0
             display: grid
-            grid-template-row: 80px 80px 80px 80px
+            grid-template-rows: 80px 80px 70px 30px
             grid-template-columns: unset
             column-gap: 5%
         &-img

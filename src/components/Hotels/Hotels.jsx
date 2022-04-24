@@ -1,5 +1,5 @@
 import Hotel from "../Hotel/Hotel";
-import Filter from "../Filter/Filter";
+import Search from "../Search/Search";
 import "./hotels.sass";
 
 function Hotels(props) {
@@ -23,7 +23,7 @@ function Hotels(props) {
         <div>
           <h2 className="Hotels_title">All reviews</h2>
           <hr className="Hotels_hr" />
-          <Filter />
+          <Search />
           <div className="Hotels_wrapper">
             {hotels.map((hotel, id) => (
               <Hotel
