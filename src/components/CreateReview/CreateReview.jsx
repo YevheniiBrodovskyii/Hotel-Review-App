@@ -1,43 +1,43 @@
 import "./createReview.sass";
-import { toTakePhoto, safeForm } from "../..";
+import { toTakePhoto, saveHotels, createPhotoRef } from "../..";
 import TakePhoto from "../TakePhoto/TakePhoto";
 import { connect } from "react-redux";
-import {
-  choosePhoto,
-  setHotelNameForm,
-  setLatForm,
-  setLongForm,
-  setStarsForm,
-  setReviewForm,
-} from "../..";
 import { validSymbols } from "../../regex";
 import { useState } from "react";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore/lite";
+import { db, storage } from "../../firebaseConfig";
+import { uploadBytes, ref } from "firebase/storage";
 
 function CreateReview(props) {
-  const {
-    toPhoto,
-    photoRef,
-    photoIsChosen,
-    lattitude,
-    longitude,
-    review,
-    hotelName,
-  } = props;
+  const { user, photoRef, toPhoto } = props;
 
+  const [hotelName, setHotelName] = useState("");
+  const [stars, setStars] = useState(0);
+  const [lattitude, setLattitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [review, setReview] = useState("");
+  const [photoIsChosen, setPhotoIsChosen] = useState(null);
   const [errorNameSymbols, isErrorNameSymbols] = useState(false);
   const [errorReviewSymbols, isErrorReviewSymbols] = useState(false);
   const [errorNameEmpty, isErrorNameEmpty] = useState(false);
   const [errorReviewEmpty, isErrorReviewEmpty] = useState(false);
   const [errorReviewOverfill, isErrorReviewOverfill] = useState(false);
 
+  // Take geolocation using gps build in phone
   function takeGeoposition() {
     navigator.geolocation.getCurrentPosition(success, error);
     function success(pos) {
       let crd = pos.coords;
 
       // getGeoposition([crd.latitude, crd.longitude]);
-      setLatForm(crd.latitude);
-      setLongForm(crd.longitude);
+      setLattitude(crd.latitude);
+      setLongitude(crd.longitude);
     }
 
     function error(err) {
@@ -45,6 +45,43 @@ function CreateReview(props) {
     }
   }
   takeGeoposition();
+  // Upload photo using counter, in order to prevent repetition
+  async function uploadPhoto(file, counter) {
+    const storageRef = ref(storage, `hotel-image-${counter}`);
+    uploadBytes(storageRef, file).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+  }
+  // Save form using local states and update them after finishing
+  async function safeForm() {
+    const photo = photoIsChosen ? photoIsChosen : photoRef;
+    const querySnapshot = await getDocs(collection(db, "counter"));
+    let counter = 0;
+    querySnapshot.forEach((doc) => {
+      counter = doc.data().photo_count;
+    });
+    await updateDoc(doc(db, "counter", "HU3Wfcb77M8r3f51qKeG"), {
+      photo_count: counter + 1,
+    });
+    uploadPhoto(photo, counter);
+    await addDoc(collection(db, "reviews"), {
+      name: hotelName,
+      img: `hotel-image-${counter}`,
+      localization: { _lat: lattitude, _long: longitude },
+      author: user.email,
+      stars: stars,
+      review: review,
+    });
+    console.log(photo);
+    setHotelName("");
+    setReview("");
+    setLongitude(null);
+    setLattitude(null);
+    setPhotoIsChosen(null);
+    createPhotoRef(null);
+    setStars(0);
+    saveHotels();
+  }
 
   return (
     <div>
@@ -70,7 +107,7 @@ function CreateReview(props) {
                   isErrorNameEmpty(false);
                   isErrorNameSymbols(false);
                 }
-                setHotelNameForm(e.target.value);
+                setHotelName(e.target.value);
               }}
               onClick={(e) => {
                 if (e.target.value === "") {
@@ -105,7 +142,7 @@ function CreateReview(props) {
                   type="file"
                   placeholder="Upload Photo"
                   onInput={(e) => {
-                    choosePhoto(e.target.files[0]);
+                    setPhotoIsChosen(e.target.files[0]);
                   }}
                 />
               </div>
@@ -131,7 +168,7 @@ function CreateReview(props) {
                 placeholder="Long"
                 value={longitude ? longitude : ""}
                 onInput={(e) => {
-                  setLongForm(e.target.value);
+                  setLongitude(e.target.value);
                 }}
               />
               <input
@@ -140,7 +177,7 @@ function CreateReview(props) {
                 placeholder="Latt"
                 value={lattitude ? lattitude : ""}
                 onInput={(e) => {
-                  setLatForm(e.target.value);
+                  setLattitude(e.target.value);
                 }}
               />
             </div>
@@ -151,7 +188,7 @@ function CreateReview(props) {
                 name="rating"
                 value="5"
                 onInput={(e) => {
-                  setStarsForm(parseInt(e.target.value));
+                  setStars(parseInt(e.target.value));
                 }}
               />
               <label htmlFor="star-5" title="Оценка «5»"></label>
@@ -161,7 +198,7 @@ function CreateReview(props) {
                 name="rating"
                 value="4"
                 onInput={(e) => {
-                  setStarsForm(parseInt(e.target.value));
+                  setStars(parseInt(e.target.value));
                 }}
               />
               <label htmlFor="star-4" title="Оценка «4»"></label>
@@ -171,7 +208,7 @@ function CreateReview(props) {
                 name="rating"
                 value="3"
                 onInput={(e) => {
-                  setStarsForm(parseInt(e.target.value));
+                  setStars(parseInt(e.target.value));
                 }}
               />
               <label htmlFor="star-3" title="Оценка «3»"></label>
@@ -181,7 +218,7 @@ function CreateReview(props) {
                 name="rating"
                 value="2"
                 onInput={(e) => {
-                  setStarsForm(parseInt(e.target.value));
+                  setStars(parseInt(e.target.value));
                 }}
               />
               <label htmlFor="star-2" title="Оценка «2»"></label>
@@ -191,7 +228,7 @@ function CreateReview(props) {
                 name="rating"
                 value="1"
                 onInput={(e) => {
-                  setStarsForm(parseInt(e.target.value));
+                  setStars(parseInt(e.target.value));
                 }}
               />
               <label htmlFor="star-1" title="Оценка «1»"></label>
@@ -214,7 +251,7 @@ function CreateReview(props) {
                   isErrorReviewSymbols(false);
                   isErrorReviewOverfill(false);
                 }
-                setReviewForm(e.target.value);
+                setReview(e.target.value);
               }}
               onClick={(e) => {
                 if (e.target.value === "") {
@@ -266,14 +303,7 @@ function CreateReview(props) {
 }
 const mapStateToProps = (state) => ({
   toPhoto: state.toPhoto,
+  user: state.user,
   photoRef: state.photoRef,
-  photoIsChosen: state.photoIsChosen,
-  coordinates: state.coordinates,
-  hotelName: state.hotelName,
-  photo: state.photo,
-  lattitude: state.lattitude,
-  longitude: state.longitude,
-  stars: state.stars,
-  review: state.review,
 });
 export default connect(mapStateToProps)(CreateReview);

@@ -1,11 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { showMap } from "../..";
 import { connect } from "react-redux";
 
 import "./popupMap.sass";
 
 function PopupMap(props) {
-  const { name, localization } = props;
+  const { name, localization, setToShowMap } = props;
 
   return (
     <div className="PopupMap animate__animated animate__bounceIn">
@@ -23,7 +22,7 @@ function PopupMap(props) {
           <div className="leaflet-wrapper">
             <button
               className="leaflet_back"
-              onClick={() => showMap(false, null)}
+              onClick={() => setToShowMap(false)}
             >
               Close
             </button>

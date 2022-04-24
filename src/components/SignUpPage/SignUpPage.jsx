@@ -1,20 +1,18 @@
 import Hotels from "../Hotels/Hotels";
 import { connect } from "react-redux";
 import "./signUpPage.sass";
-import {
-  toSignUp,
-  signUp,
-  setSignUpLogin,
-  setSignUpPassword,
-  setSignUpPassword2,
-} from "../../index";
-
+import { toSignUp, authenticate } from "../../index";
+import { auth } from "../../firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { validEmail } from "../../regex";
 import { useState } from "react";
 
 function SignUpPage(props) {
-  const { isSignUp, signUpLogin, signUpPassword, signUpPassword2 } = props;
+  const { isSignUp } = props;
 
+  const [signUpLogin, setSignUpLogin] = useState("");
+  const [signUpPassword, setSignUpPassword] = useState("");
+  const [signUpPassword2, setSignUpPassword2] = useState("");
   const [errorEmailEmpty, iserrorEmailEmpty] = useState(false);
   const [errorEmailValid, iserrorEmailValid] = useState(false);
   const [errorPasswordEmpty, iserrorPasswordEmpty] = useState(false);
@@ -25,6 +23,27 @@ function SignUpPage(props) {
     iserrorEmailEmpty(false);
     toSignUp(false);
   }
+
+  // Create account
+  function signUp() {
+    if (signUpPassword === signUpPassword2 || signUpPassword !== "") {
+      createUserWithEmailAndPassword(auth, signUpLogin, signUpPassword)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          authenticate(user, true);
+          setSignUpLogin("");
+          setSignUpPassword("");
+          setSignUpPassword2("");
+        })
+        .catch((error) => {
+          navigator.vibrate(1000);
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        });
+    }
+  }
+
   return (
     <div>
       {isSignUp ? (
@@ -150,8 +169,5 @@ function SignUpPage(props) {
 const mapStateToProps = (state) => ({
   isauth: state.authenticated,
   signUp: state.signUp,
-  singUpLogin: state.signUpLogin,
-  signUpPassword: state.signUpPassword,
-  signUpPassword2: state.signUpPassword2,
 });
 export default connect(mapStateToProps)(SignUpPage);

@@ -2,18 +2,17 @@ import "./welcomePage.sass";
 import SignUpPage from "../SignUpPage/SignUpPage";
 import MainPage from "../MainPage";
 import { connect } from "react-redux";
-import {
-  toSignUp,
-  setLoginEmail,
-  setLoginPassword,
-  loginClick,
-} from "../../index";
+import { toSignUp } from "../../index";
+import { auth } from "../../firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { validEmail } from "../../regex";
+import { authenticate } from "../../index";
 
 function WelcomePage(props) {
-  const { isauth, signUp, loginEmail, loginPassword } = props;
-
+  const { isauth, signUp } = props;
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [errorEmailEmpty, iserrorEmailEmpty] = useState(false);
   const [errorEmailValid, iserrorEmailValid] = useState(false);
   const [errorPasswordEmpty, iserrorPasswordEmpty] = useState(false);
@@ -24,7 +23,19 @@ function WelcomePage(props) {
     iserrorPasswordEmpty(false);
     toSignUp(true);
   }
-
+  function loginClick() {
+    signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+      .then((userCredential) => {
+        console.log("User logged in");
+        authenticate(userCredential.user, true);
+        setLoginEmail("");
+        setLoginPassword("");
+      })
+      .catch((error) => {
+        navigator.vibrate(1000);
+        console.log("User logged out");
+      });
+  }
   return (
     <div>
       {isauth ? (

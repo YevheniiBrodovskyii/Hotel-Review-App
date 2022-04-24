@@ -1,13 +1,12 @@
-import { showMap } from "../..";
+import { saveHotels } from "../..";
 import starsMap from "../../starsMap";
-import { deleteReview } from "../..";
 import { connect } from "react-redux";
 import PopupMap from "../PopupMap/PopupMap";
 import "./hotel.sass";
 import { useEffect, useState } from "react";
-
+import { deleteDoc, doc } from "firebase/firestore/lite";
 import { ref, getDownloadURL, deleteObject } from "firebase/storage";
-import { storage } from "../../firebaseConfig";
+import { storage, db } from "../../firebaseConfig";
 
 function Hotel(props) {
   const {
@@ -18,14 +17,12 @@ function Hotel(props) {
     author,
     filter,
     id,
-    map,
-    mapId,
     user,
     img,
   } = props;
   const [photoSrc, setPhotoSrc] = useState("");
   const locatization = [_lat, _long];
-
+  const [toShowMap, setToShowMap] = useState(false);
   useEffect(() => {
     getDownloadURL(ref(storage, img))
       .then((url) => {
@@ -34,16 +31,26 @@ function Hotel(props) {
       .catch((error) => {
         // Handle any errors
       });
-  }, [photoSrc]);
-  console.log(photoSrc);
+  });
+
+  // Delete review by id
+  async function deleteReview(id) {
+    console.log(`Trying to delete object with id=${id}`);
+    await deleteDoc(doc(db, "reviews", id));
+    saveHotels();
+  }
   return (
     <>
       {filter ? (
         <>
           {author === user.email ? (
-            <div className="2">
-              {map && id === mapId ? (
-                <PopupMap name={name} localization={locatization} />
+            <>
+              {toShowMap ? (
+                <PopupMap
+                  name={name}
+                  localization={locatization}
+                  setToShowMap={setToShowMap}
+                />
               ) : (
                 <div className="Hotel_card animate__animated animate__fadeIn">
                   <h2 className="Hotel_card-name">{name}</h2>
@@ -56,7 +63,7 @@ function Hotel(props) {
                     <h3 className="Hotel_card-localization">
                       <button
                         className="Hotel_card-btn"
-                        onClick={() => showMap(true, id)}
+                        onClick={() => setToShowMap(true)}
                       >
                         Show on map
                       </button>
@@ -79,15 +86,19 @@ function Hotel(props) {
                   </div>
                 </div>
               )}
-            </div>
+            </>
           ) : (
             <></>
           )}
         </>
       ) : (
         <>
-          {map && id === mapId ? (
-            <PopupMap name={name} localization={locatization} />
+          {toShowMap ? (
+            <PopupMap
+              name={name}
+              localization={locatization}
+              setToShowMap={setToShowMap}
+            />
           ) : (
             <div className="Hotel_card animate__animated animate__fadeIn">
               <h2 className="Hotel_card-name">{name}</h2>
@@ -100,7 +111,7 @@ function Hotel(props) {
                 <h3 className="Hotel_card-localization">
                   <button
                     className="Hotel_card-btn"
-                    onClick={() => showMap(true, id)}
+                    onClick={() => setToShowMap(true)}
                   >
                     Show on map
                   </button>
@@ -119,8 +130,6 @@ function Hotel(props) {
   );
 }
 const mapStateToProps = (state) => ({
-  map: state.map,
-  mapId: state.mapId,
   user: state.user,
 });
 export default connect(mapStateToProps)(Hotel);

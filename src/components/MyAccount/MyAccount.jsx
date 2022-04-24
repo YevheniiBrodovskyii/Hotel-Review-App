@@ -1,11 +1,19 @@
 import "./myAccount.sass";
-import { logout } from "../../index";
+import { authenticate } from "../../index";
+import { auth } from "../../firebaseConfig";
+import { signOut } from "firebase/auth";
 import { connect } from "react-redux";
 
 import Hotels from "../Hotels/Hotels";
 
 function MyAccount(props) {
   const { user, hotels } = props;
+  // logout
+  function logout() {
+    signOut(auth);
+    authenticate(null, false);
+    console.log("Successful logout");
+  }
   return (
     <div className="MyAccount animate__animated animate__fadeIn">
       <h3 className="MyAccount_title">Hi, {user.email}</h3>

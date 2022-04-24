@@ -6,26 +6,18 @@ import { Provider } from 'react-redux';
 import store from  "./store";
 import * as actions from "./components/actions/actions"
 import { bindActionCreators } from 'redux';
-import { db, auth, storage  } from "./firebaseConfig";
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { db, auth  } from "./firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import {
   collection,
   getDocs,
-  deleteDoc,
-  doc,
-  updateDoc, 
-  addDoc
 } from "firebase/firestore/lite";
-import {
-  uploadBytes,
-  ref
-} from "firebase/storage";
+
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 const {dispatch} = store;
-const {authenticate, fetchHotels, toSignUp, toBack, showMap, toTakePhoto, createPhotoRef, choosePhoto, getGeoposition, setHotelNameForm, setLatForm, setLongForm, setStarsForm, setReviewForm, 
- setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, isLoaded} = bindActionCreators(actions, dispatch);
+const {authenticate, fetchHotels, toSignUp, toBack, toTakePhoto, createPhotoRef, choosePhoto, getGeoposition, isLoaded, setIsLoadedSearch} = bindActionCreators(actions, dispatch);
 
 // Firebase Functions:
 async function saveHotels() {
@@ -39,59 +31,9 @@ async function saveHotels() {
   isLoaded(false);
 }
 
-setInterval(() => {
-  saveHotels();
-}, 15000)
-
-async function uploadPhoto(file, counter) {
-  
-  const storageRef = ref(storage, `hotel-image-${counter}`);
-  uploadBytes(storageRef, file).then((snapshot) => {
-    console.log("Uploaded a blob or file!");
-  });
-}
-
-async function safeForm() {
-  const hotelName = store.getState().hotelName
-  const stars = store.getState().stars
-  const lattitude = store.getState().lattitude
-  const longitude = store.getState().longitude
-  const review = store.getState().review
-  const author = store.getState().user.email
-  const photo = store.getState().photoIsChosen ? (store.getState().photoIsChosen) : (store.getState().photoRef)
-  const querySnapshot = await getDocs(collection(db, "counter"));
-  let counter = 0
-  querySnapshot.forEach((doc) => {
-    counter = doc.data().photo_count
-  });
-  await updateDoc(doc(db, 'counter', 'HU3Wfcb77M8r3f51qKeG'), {
-    photo_count: counter+1
-  });
-  uploadPhoto(photo, counter)
-  await addDoc(collection(db, "reviews"), {
-    name: hotelName,
-    img: `hotel-image-${counter}`,
-    localization: {_lat: lattitude, _long: longitude},
-    author: author,
-    stars: stars,
-    review: review
-  })
-  console.log(photo)
-  setHotelNameForm("")
-  setReviewForm("")
-  setLatForm(null)
-  setLongForm(null)
-  setStarsForm(null)
-  choosePhoto(null)
-  createPhotoRef(null)
-  saveHotels()
-}
-
-async function deleteReview(id) {
-  console.log(`Trying to delete object with id=${id}`);
-  await deleteDoc(doc(db, "reviews", id));
-  saveHotels();
-}
+// setInterval(() => {
+//   saveHotels();
+// }, 15000)
 
 function isAuthenticated() {
   onAuthStateChanged(auth, (user) => {
@@ -105,57 +47,13 @@ function isAuthenticated() {
   });
 }
 
-function loginClick() {
-  let inputEmail = store.getState().loginEmail
-  let inputPass = store.getState().loginPassword
-  signInWithEmailAndPassword(auth, inputEmail, inputPass)
-    .then((userCredential) => {
-      console.log("User logged in");
-      authenticate(userCredential.user, true);
-      setLoginEmail("")
-      setLoginPassword("")
-  })
-  .catch((error) => {
-    navigator.vibrate(1000);
-    console.log("User logged out");
-  });
-}
-
-function signUp() {
-  var inputEmail = store.getState().signUpLogin
-  var inputPass = store.getState().signUpPassword
-  var inputPass2 = store.getState().signUpPassword2
-  if (inputPass === inputPass2 || inputPass !== "") {
-    createUserWithEmailAndPassword(auth, inputEmail, inputPass)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        authenticate(user, true);
-        setSignUpLogin("")
-        setSignUpPassword("")
-        setSignUpPassword2("")
-      })
-      .catch((error) => {
-        navigator.vibrate(1000);
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      });
-  }
-}
-
-function logout() {
-  signOut(auth);
-  authenticate(null, false);
-  console.log("Successful logout");
-}
-
 root.render(<Provider store={store}>
     <App />
   </Provider>);
 
 
 serviceWorkerRegistration.register();
-export {authenticate, fetchHotels, toSignUp, toBack, logout, deleteReview,showMap, toTakePhoto, createPhotoRef, isLoaded, choosePhoto, getGeoposition, uploadPhoto, safeForm,
-    saveHotels, isAuthenticated, signUp, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, loginClick, setHotelNameForm, setLatForm, setLongForm, setStarsForm, setReviewForm,}
+export {authenticate, fetchHotels, toSignUp, toBack, toTakePhoto, createPhotoRef, isLoaded, choosePhoto, getGeoposition,
+    saveHotels, isAuthenticated, setIsLoadedSearch}
 
 
