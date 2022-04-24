@@ -6,7 +6,7 @@ import PopupMap from "../PopupMap/PopupMap";
 import "./hotel.sass";
 import { useEffect, useState } from "react";
 
-import { ref, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL, deleteObject } from "firebase/storage";
 import { storage } from "../../firebaseConfig";
 
 function Hotel(props) {
@@ -69,7 +69,10 @@ function Hotel(props) {
                   <div className="Hotel_card-delete--wrapper">
                     <button
                       className="Hotel_card-delete"
-                      onClick={() => deleteReview(id)}
+                      onClick={() => {
+                        deleteReview(id);
+                        deleteObject(ref(storage, img));
+                      }}
                     >
                       Delete
                     </button>

@@ -112,14 +112,14 @@ function SignUpPage(props) {
               <input
                 value={signUpPassword2}
                 onInput={(e) => {
-                  if (signUpPassword === signUpPassword2) {
+                  setSignUpPassword2(e.target.value);
+                  if (signUpPassword === e.target.value) {
                     iserrorPasswordMatch(false);
                     console.log("Match");
                   } else {
                     iserrorPasswordMatch(true);
                     console.log("No Match");
                   }
-                  setSignUpPassword2(e.target.value);
                 }}
                 className="Welcome_page__input"
                 id="welcome_pass_repeat"

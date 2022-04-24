@@ -63,7 +63,7 @@ function CreateReview(props) {
               onInput={(e) => {
                 if (e.target.value === "") {
                   isErrorNameEmpty(true);
-                } else if (!validSymbols.test(e.target.value)) {
+                } else if (validSymbols.test(e.target.value)) {
                   isErrorNameSymbols(true);
                   isErrorNameEmpty(false);
                 } else {
@@ -204,10 +204,10 @@ function CreateReview(props) {
               onInput={(e) => {
                 if (e.target.value === "") {
                   isErrorReviewEmpty(true);
-                } else if (!validSymbols.test(e.target.value)) {
+                } else if (validSymbols.test(e.target.value)) {
                   isErrorReviewSymbols(true);
                   isErrorReviewEmpty(false);
-                } else if (e.target.value > 400) {
+                } else if (e.target.value.length > 400) {
                   isErrorReviewOverfill(true);
                 } else {
                   isErrorReviewEmpty(false);

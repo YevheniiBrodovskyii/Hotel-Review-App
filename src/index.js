@@ -58,7 +58,7 @@ async function safeForm() {
   const longitude = store.getState().longitude
   const review = store.getState().review
   const author = store.getState().user.email
-  const photo = store.getState().photo ? (store.getState().photo) : (store.getState().photoRef)
+  const photo = store.getState().photoIsChosen ? (store.getState().photoIsChosen) : (store.getState().photoRef)
   const querySnapshot = await getDocs(collection(db, "counter"));
   let counter = 0
   querySnapshot.forEach((doc) => {
@@ -76,6 +76,7 @@ async function safeForm() {
     stars: stars,
     review: review
   })
+  console.log(photo)
   setHotelNameForm("")
   setReviewForm("")
   setLatForm(null)

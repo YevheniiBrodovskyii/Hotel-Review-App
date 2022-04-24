@@ -3,7 +3,7 @@ export const validEmail = new RegExp(
 );
 
 export const validSymbols = new RegExp(
-  "^[a-zA-Z0-9]"
+  /[|\\/~^:,;?!&%$@*+]/
 );
 
 export const validLetters = new RegExp(
