@@ -7,7 +7,7 @@ import Hotels from "../Hotels/Hotels";
 function MyAccount(props) {
   const { user, hotels } = props;
   return (
-    <div className="MyAccount">
+    <div className="MyAccount animate__animated animate__fadeIn">
       <h3 className="MyAccount_title">Hi, {user.email}</h3>
       <div className="MyAccount_logout-container">
         <button className="MyAccount_logout" onClick={logout}>

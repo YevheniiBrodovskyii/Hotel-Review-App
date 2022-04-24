@@ -4,17 +4,24 @@ import MainPage from "../MainPage";
 import { connect } from "react-redux";
 import {
   toSignUp,
-  showLoginError,
   setLoginEmail,
   setLoginPassword,
   loginClick,
 } from "../../index";
+import { useState } from "react";
+import { validEmail } from "../../regex";
 
 function WelcomePage(props) {
-  const { isauth, signUp, error, loginEmail, loginPassword } = props;
+  const { isauth, signUp, loginEmail, loginPassword } = props;
+
+  const [errorEmailEmpty, iserrorEmailEmpty] = useState(false);
+  const [errorEmailValid, iserrorEmailValid] = useState(false);
+  const [errorPasswordEmpty, iserrorPasswordEmpty] = useState(false);
 
   function signUpClick() {
-    showLoginError(false);
+    iserrorEmailValid(false);
+    iserrorEmailEmpty(false);
+    iserrorPasswordEmpty(false);
     toSignUp(true);
   }
 
@@ -42,13 +49,32 @@ function WelcomePage(props) {
                   </label>
                   <input
                     value={loginEmail}
-                    onInput={(e) => setLoginEmail(e.target.value)}
+                    onInput={(e) => {
+                      if (e.target.value === "") {
+                        iserrorEmailEmpty(true);
+                      } else if (!validEmail.test(e.target.value)) {
+                        iserrorEmailValid(true);
+                        iserrorEmailEmpty(false);
+                      } else {
+                        iserrorEmailValid(false);
+                        iserrorEmailEmpty(false);
+                      }
+                      setLoginEmail(e.target.value);
+                    }}
+                    onClick={() => {
+                      iserrorEmailEmpty(true);
+                    }}
                     className="Welcome_page__input"
                     id="welcome_mail"
                     type="email"
                     placeholder="Your e-mail..."
                   />
-                  {error ? (
+                  {errorEmailEmpty ? (
+                    <div className="SignUp_error">Cant't be empty!</div>
+                  ) : (
+                    <></>
+                  )}
+                  {errorEmailValid ? (
                     <div className="SignUp_error">
                       Example : example@gmail.com
                     </div>
@@ -63,14 +89,26 @@ function WelcomePage(props) {
                   </label>
                   <input
                     value={loginPassword}
-                    onInput={(e) => setLoginPassword(e.target.value)}
+                    onInput={(e) => {
+                      if (e.target.value.length < 6) {
+                        iserrorPasswordEmpty(true);
+                      } else {
+                        iserrorPasswordEmpty(false);
+                      }
+                      setLoginPassword(e.target.value);
+                    }}
+                    onClick={() => {
+                      iserrorPasswordEmpty(true);
+                    }}
                     className="Welcome_page__input"
                     id="welcome_pass"
                     type="password"
                     placeholder="Your password..."
                   />
-                  {error ? (
-                    <div className="SignUp_error">Invalid password</div>
+                  {errorPasswordEmpty ? (
+                    <div className="SignUp_error">
+                      Password must contain more that 6 symbols!
+                    </div>
                   ) : (
                     <></>
                   )}
@@ -92,7 +130,6 @@ function WelcomePage(props) {
 const mapStateToProps = (state) => ({
   isauth: state.authenticated,
   signUp: state.signUp,
-  error: state.errorLogin,
   loginEmail: state.loginEmail,
   loginPassword: state.loginPassword,
 });

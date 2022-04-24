@@ -1,5 +1,6 @@
 .NavBar
     position: fixed
+    z-index: 9999
     display: flex
     justify-content: space-between
     width: 400px
@@ -13,7 +14,7 @@
         margin: 0 auto
     &_item
         text-decoration: none
-        &:hover , &:active
+        &:hover
             .NavBar_title
                 transition: 0.2s all
                 color: #DAAD86
@@ -29,6 +30,15 @@
         color: white
         padding-bottom: 5px
 
+.active
+    .NavBar_title
+        transition: 0.2s all
+        color: #DAAD86
+        border-bottom: 1px solid #DAAD86
+        .NavBar_img
+            transition: 0.2s all
+            transform: scale(1.1)
+
 @media ( min-width:320px) and ( max-width:480px)
     .NavBar
         bottom: 0
@@ -41,7 +51,7 @@
         &_container
             width: 100%
         &_img
-            width: 24px
+            width: 27px
             margin: 0 auto
             img
                 width: 25px

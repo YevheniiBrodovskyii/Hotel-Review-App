@@ -3,20 +3,27 @@ import { connect } from "react-redux";
 import "./signUpPage.sass";
 import {
   toSignUp,
-  showSignUpError,
   signUp,
   setSignUpLogin,
   setSignUpPassword,
   setSignUpPassword2,
 } from "../../index";
 
+import { validEmail } from "../../regex";
+import { useState } from "react";
+
 function SignUpPage(props) {
-  const { isSignUp, error, singUpLogin, singUpPassword, singUpPassword2 } =
-    props;
+  const { isSignUp, signUpLogin, signUpPassword, signUpPassword2 } = props;
+
+  const [errorEmailEmpty, iserrorEmailEmpty] = useState(false);
+  const [errorEmailValid, iserrorEmailValid] = useState(false);
+  const [errorPasswordEmpty, iserrorPasswordEmpty] = useState(false);
+  const [errorPasswordMatch, iserrorPasswordMatch] = useState(false);
 
   function hideErrorAndBack() {
+    iserrorEmailValid(false);
+    iserrorEmailEmpty(false);
     toSignUp(false);
-    showSignUpError(false);
   }
   return (
     <div>
@@ -24,7 +31,7 @@ function SignUpPage(props) {
         <Hotels />
       ) : (
         <div className="Welcome_page-container">
-          <div className="Welcome_page animate__animated animate__fadeIn">
+          <div className="Welcome_page animate__animated animate__fadeInLeft">
             <h1 className="Welcome_page__title">Welcome to Hotel Review </h1>
             <h3 className="Welcome_page__subtitle">Create an account :</h3>
             <div className="Welcome_page__wrapper">
@@ -35,14 +42,33 @@ function SignUpPage(props) {
                 E-mail:
               </label>
               <input
-                value={singUpLogin}
-                onInput={(e) => setSignUpLogin(e.target.value)}
+                value={signUpLogin}
+                onInput={(e) => {
+                  if (e.target.value === "") {
+                    iserrorEmailEmpty(true);
+                  } else if (!validEmail.test(e.target.value)) {
+                    iserrorEmailValid(true);
+                    iserrorEmailEmpty(false);
+                  } else {
+                    iserrorEmailValid(false);
+                    iserrorEmailEmpty(false);
+                  }
+                  setSignUpLogin(e.target.value);
+                }}
+                onClick={() => {
+                  iserrorEmailEmpty(true);
+                }}
                 className="Welcome_page__input"
                 id="welcome_mail"
                 type="email"
                 placeholder="Your e-mail..."
               />
-              {error ? (
+              {errorEmailEmpty ? (
+                <div className="SignUp_error">Can't be empty!</div>
+              ) : (
+                <></>
+              )}
+              {errorEmailValid ? (
                 <div className="SignUp_error">Example : example@gmail.com</div>
               ) : (
                 <></>
@@ -54,15 +80,28 @@ function SignUpPage(props) {
                 Password:
               </label>
               <input
-                value={singUpPassword}
-                onInput={(e) => setSignUpPassword(e.target.value)}
+                value={signUpPassword}
+                onInput={(e) => {
+                  if (e.target.value.length < 6) {
+                    iserrorPasswordEmpty(true);
+                  } else if (signUpPassword !== signUpPassword2) {
+                    iserrorPasswordMatch(true);
+                    iserrorPasswordEmpty(false);
+                  } else {
+                    iserrorPasswordMatch(false);
+                    iserrorPasswordEmpty(false);
+                  }
+                  setSignUpPassword(e.target.value);
+                }}
                 className="Welcome_page__input"
                 id="welcome_pass"
                 type="password"
                 placeholder="Your password..."
               />
-              {error ? (
-                <div className="SignUp_error">Minimum length 6 charakters</div>
+              {errorPasswordEmpty ? (
+                <div className="SignUp_error">
+                  Password must contain more that 6 symbols!
+                </div>
               ) : (
                 <></>
               )}
@@ -71,17 +110,24 @@ function SignUpPage(props) {
                 htmlFor="welcome_pass"
               ></label>
               <input
-                value={singUpPassword2}
-                onInput={(e) => setSignUpPassword2(e.target.value)}
+                value={signUpPassword2}
+                onInput={(e) => {
+                  if (signUpPassword === signUpPassword2) {
+                    iserrorPasswordMatch(false);
+                    console.log("Match");
+                  } else {
+                    iserrorPasswordMatch(true);
+                    console.log("No Match");
+                  }
+                  setSignUpPassword2(e.target.value);
+                }}
                 className="Welcome_page__input"
                 id="welcome_pass_repeat"
                 type="password"
                 placeholder="Repeat password..."
               />
-              {error ? (
-                <div className="SignUp_error">
-                  Please make sure you have entered the same password.
-                </div>
+              {errorPasswordMatch ? (
+                <div className="SignUp_error">Passwords didn't match!</div>
               ) : (
                 <></>
               )}
@@ -104,9 +150,8 @@ function SignUpPage(props) {
 const mapStateToProps = (state) => ({
   isauth: state.authenticated,
   signUp: state.signUp,
-  error: state.errorSignUp,
-  singUpLogin: state.singUpLogin,
-  singUpPassword: state.singUpPassword,
-  singUpPassword2: state.singUpPassword2,
+  singUpLogin: state.signUpLogin,
+  signUpPassword: state.signUpPassword,
+  signUpPassword2: state.signUpPassword2,
 });
 export default connect(mapStateToProps)(SignUpPage);

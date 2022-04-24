@@ -4,17 +4,25 @@ const initialState = {
     hotels: [],
     signUp: false,
     back: false,
-    errorSignUp: false,
-    errorLogin: false,
-    singUpLogin: "",
-    singUpPassword: "",
-    singUpPassword2: "",
+    signUpLogin: "",
+    signUpPassword: "",
+    signUpPassword2: "",
     loginEmail: "",
     loginPassword: "",
     map: false,
     mapId: null,
     toPhoto: false,
-    photoRef: null
+    photoRef: null,
+    isLoaded: true,
+    photoIsChosen: null,
+    coordinates: null,
+    hotelName: "",
+    photo: "",
+    lattitude: null,
+    longitude: null,
+    stars: 0,
+    review: "",
+    srcImgs: []
 }
 
 const reducer = (state=initialState, action) => {
@@ -76,20 +84,59 @@ const reducer = (state=initialState, action) => {
                 ...state,
                 back: action.back
             }
-        case "SIGNUPERROR":
-            return {
-                ...state,
-                errorSignUp: action.error
-            }
-        case "LOGINERROR":
-            return {
-                ...state,
-                errorLogin: action.error
-            }
         case "CREATEPHOTOREF":
             return {
                 ...state,
                 photoRef: action.photoRef
+            }
+        case "ISLOADED":
+            return {
+                ...state,
+                isLoaded: action.isLoaded
+            }
+        case "CHOOSEPHOTO":
+            return {
+                ...state,
+                photoIsChosen: action.photoIsChosen
+            }
+        case "GETGEOPOSITION":
+            return {
+                ...state,
+                coordinates: action.coordinates
+            }
+        case "SETHOTELNAMEFORM" :
+                return {
+                    ...state,
+                    hotelName: action.hotelName
+                }          
+        case "SETLATFORM" :
+                return {
+                    ...state,
+                    lattitude: action.lattitude,
+            
+                }
+        case "SETLONGFORM" :
+                return {
+                    ...state,
+                    longitude : action.longitude,
+            
+                }    
+        case "SETSTARSFORM" :
+                return {
+                    ...state,
+                    stars : action.stars,
+            
+                }
+        case "SETREVIEWFORM" :
+                return {
+                    ...state,
+                    review : action.review,
+            
+                }
+        case "SETSRCIMGS":
+            return {
+                ...state,
+                srcImgs: action.srcImgs
             }
         default:
             return state

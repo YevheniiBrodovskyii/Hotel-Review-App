@@ -7,8 +7,9 @@ import WelcomePage from "./WelcomePage/WelcomePage";
 import NavBar from "./NavBar/NavBar";
 import { saveHotels, isAuthenticated } from "../index";
 import { connect } from "react-redux";
+import Loader from "./Loader/Loader";
 
-function MainPage({ isauth, hotels }) {
+function MainPage({ isauth, hotels, loaded }) {
   useEffect(() => {
     saveHotels();
   }, []);
@@ -19,30 +20,40 @@ function MainPage({ isauth, hotels }) {
 
   return (
     <div>
-      {isauth ? (
-        <BrowserRouter>
-          <NavBar />
-          <div className="container">
-            <Routes>
-              <Route
-                exact
-                path="/CreateReview"
-                element={<CreateReview />}
-              ></Route>
-              <Route
-                index
-                exact
-                path="/Hotels"
-                element={<Hotels hotels={hotels} />}
-              ></Route>
-              <Route exact path="/MyAccount" element={<MyAccount />}></Route>
-              <Route path="*" element={<Hotels hotels={hotels} />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
+      {loaded ? (
+        <Loader />
       ) : (
-        <div className="container">
-          <WelcomePage />
+        <div>
+          {isauth ? (
+            <BrowserRouter>
+              <NavBar />
+              <div className="container">
+                <Routes>
+                  <Route
+                    exact
+                    path="/CreateReview"
+                    element={<CreateReview />}
+                  ></Route>
+                  <Route
+                    index
+                    exact
+                    path="/Hotels"
+                    element={<Hotels hotels={hotels} />}
+                  ></Route>
+                  <Route
+                    exact
+                    path="/MyAccount"
+                    element={<MyAccount />}
+                  ></Route>
+                  <Route path="*" element={<Hotels hotels={hotels} />} />
+                </Routes>
+              </div>
+            </BrowserRouter>
+          ) : (
+            <div className="container">
+              <WelcomePage />
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -51,5 +62,6 @@ function MainPage({ isauth, hotels }) {
 const mapStateToProps = (state) => ({
   isauth: state.authenticated,
   hotels: state.hotels,
+  loaded: state.isLoaded,
 });
 export default connect(mapStateToProps)(MainPage);

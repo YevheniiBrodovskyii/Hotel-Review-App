@@ -4,13 +4,18 @@ import { deleteReview } from "../..";
 import { connect } from "react-redux";
 import PopupMap from "../PopupMap/PopupMap";
 import "./hotel.sass";
+import { useEffect, useState } from "react";
+
+// import {
+//   ref,
+//   getDownloadURL,
+// } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-storage.js";
+// import { storage } from "../../firebaseConfig";
 
 function Hotel(props) {
   const {
     name,
-    img,
-    localization: lat,
-    long,
+    localization: { _lat, _long },
     stars,
     review,
     author,
@@ -18,29 +23,92 @@ function Hotel(props) {
     id,
     map,
     mapId,
+    user,
+    img,
   } = props;
+  const [photoSrc, setPhotoSrc] = useState("");
+  const locatization = [_lat, _long];
 
+  // useEffect(() => {
+  //   getDownloadURL(ref(storage, img))
+  //     .then((url) => {
+  //       setPhotoSrc(url);
+  //     })
+  //     .catch((error) => {
+  //       // Handle any errors
+  //     });
+  // }, [photoSrc]);
+  console.log(photoSrc);
   return (
     <div>
-      {map && id === mapId ? (
-        <PopupMap />
-      ) : (
-        <div className="Hotel_card">
-          {filter ? (
-            <button onClick={() => deleteReview(id)}>Delete</button>
+      {filter ? (
+        <>
+          {author === user.email ? (
+            <div className="2">
+              {map && id === mapId ? (
+                <PopupMap name={name} localization={locatization} />
+              ) : (
+                <div className="Hotel_card animate__animated animate__fadeIn">
+                  <h2 className="Hotel_card-name">{name}</h2>
+                  <div className="Hotel_card_wrapper">
+                    <img
+                      className="Hotel_card-img"
+                      src={photoSrc}
+                      alt="hotel_img"
+                    />
+                    <h3 className="Hotel_card-localization">
+                      <button
+                        className="Hotel_card-btn"
+                        onClick={() => showMap(true, id)}
+                      >
+                        Show on map
+                      </button>
+                    </h3>
+                    {starsMap.get(stars)}
+                  </div>
+                  <div className="Hotel_card-review">{review}</div>
+                  <div className="Hotel_card-delete--wrapper">
+                    <button
+                      className="Hotel_card-delete"
+                      onClick={() => deleteReview(id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <></>
           )}
-          <h2 className="Hotel_card-name">{name}</h2>
-          <div className="Hotel_card_wrapper">
-            <img className="Hotel_card-img" src={img} alt="hotel_img" />
-            <h3 className="Hotel_card-localization">
-              <button onClick={() => showMap(true, id)}>Show on map</button>
-            </h3>
-            {starsMap.get(stars)}
-          </div>
-          <p className="Hotel_card-review">{review}</p>
-          <h5 className="Hotel_card-author">Wroten by {author}</h5>
+        </>
+      ) : (
+        <div>
+          {map && id === mapId ? (
+            <PopupMap name={name} localization={locatization} />
+          ) : (
+            <div className="Hotel_card animate__animated animate__fadeIn">
+              <h2 className="Hotel_card-name">{name}</h2>
+              <div className="Hotel_card_wrapper">
+                <img
+                  className="Hotel_card-img"
+                  src={photoSrc}
+                  alt="hotel_img"
+                />
+                <h3 className="Hotel_card-localization">
+                  <button
+                    className="Hotel_card-btn"
+                    onClick={() => showMap(true, id)}
+                  >
+                    Show on map
+                  </button>
+                </h3>
+                {starsMap.get(stars)}
+              </div>
+              <div className="Hotel_card-review">{review}</div>
+              <h5 className="Hotel_card-author">Wroten by {author}</h5>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -49,5 +117,6 @@ function Hotel(props) {
 const mapStateToProps = (state) => ({
   map: state.map,
   mapId: state.mapId,
+  user: state.user,
 });
 export default connect(mapStateToProps)(Hotel);

@@ -6,20 +6,26 @@ import { Provider } from 'react-redux';
 import store from  "./store";
 import * as actions from "./components/actions/actions"
 import { bindActionCreators } from 'redux';
-import { db, auth } from "./firebaseConfig";
+import { db, auth, storage  } from "./firebaseConfig";
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
 import {
   collection,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  updateDoc, 
+  addDoc
 } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+import {
+  uploadBytes,
+  ref
+} from "https://www.gstatic.com/firebasejs/9.6.0/firebase-storage.js";
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 const {dispatch} = store;
-const {authenticate, fetchHotels, toSignUp, toBack, showMap, toTakePhoto, createPhotoRef,
-  showSignUpError, showLoginError, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword} = bindActionCreators(actions, dispatch);
+const {authenticate, fetchHotels, toSignUp, toBack, showMap, toTakePhoto, createPhotoRef, choosePhoto, getGeoposition, setHotelNameForm, setLatForm, setLongForm, setStarsForm, setReviewForm, 
+ setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, isLoaded} = bindActionCreators(actions, dispatch);
 
 // Firebase Functions:
 async function saveHotels() {
@@ -30,11 +36,55 @@ async function saveHotels() {
   });
   console.log("Data is fetched!");
   fetchHotels(_hotels);
+  isLoaded(false);
 }
 
 setInterval(() => {
   saveHotels();
 }, 15000)
+
+async function uploadPhoto(file, counter) {
+  
+  const storageRef = ref(storage, `hotel-image-${counter}`);
+  uploadBytes(storageRef, file).then((snapshot) => {
+    console.log("Uploaded a blob or file!");
+  });
+}
+
+async function safeForm() {
+  const hotelName = store.getState().hotelName
+  const stars = store.getState().stars
+  const lattitude = store.getState().lattitude
+  const longitude = store.getState().longitude
+  const review = store.getState().review
+  const author = store.getState().user.email
+  const photo = store.getState().photo ? (store.getState().photo) : (store.getState().photoRef)
+  const querySnapshot = await getDocs(collection(db, "counter"));
+  let counter = 0
+  querySnapshot.forEach((doc) => {
+    counter = doc.data().photo_count
+  });
+  await updateDoc(doc(db, 'counter', 'HU3Wfcb77M8r3f51qKeG'), {
+    photo_count: counter+1
+  });
+  uploadPhoto(photo, counter)
+  await addDoc(collection(db, "reviews"), {
+    name: hotelName,
+    img: `hotel-image-${counter}`,
+    localization: {_lat: lattitude, _long: longitude},
+    author: author,
+    stars: stars,
+    review: review
+  })
+  setHotelNameForm("")
+  setReviewForm("")
+  setLatForm(null)
+  setLongForm(null)
+  setStarsForm(null)
+  choosePhoto(null)
+  createPhotoRef(null)
+  saveHotels()
+}
 
 async function deleteReview(id) {
   console.log(`Trying to delete object with id=${id}`);
@@ -63,10 +113,9 @@ function loginClick() {
       authenticate(userCredential.user, true);
       setLoginEmail("")
       setLoginPassword("")
-      showLoginError(false)
   })
   .catch((error) => {
-    showLoginError(true);
+    navigator.vibrate(1000);
     console.log("User logged out");
   });
 }
@@ -86,9 +135,9 @@ function signUp() {
         setSignUpPassword2("")
       })
       .catch((error) => {
+        navigator.vibrate(1000);
         const errorMessage = error.message;
         console.log(errorMessage);
-        showSignUpError(true);
       });
   }
 }
@@ -105,7 +154,7 @@ root.render(<Provider store={store}>
 
 
 serviceWorkerRegistration.register();
-export {authenticate, fetchHotels, toSignUp, toBack, showSignUpError, logout, deleteReview,showMap, toTakePhoto, createPhotoRef,
-   showLoginError, saveHotels, isAuthenticated, signUp, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, loginClick}
+export {authenticate, fetchHotels, toSignUp, toBack, logout, deleteReview,showMap, toTakePhoto, createPhotoRef, isLoaded, choosePhoto, getGeoposition, uploadPhoto, safeForm,
+    saveHotels, isAuthenticated, signUp, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword, loginClick, setHotelNameForm, setLatForm, setLongForm, setStarsForm, setReviewForm,}
 
 

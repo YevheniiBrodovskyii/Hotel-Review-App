@@ -56,19 +56,6 @@ const toBack = (back) => {
         "back": back
     }
 }
-const showSignUpError = (error) => {
-    return {
-        "type": "SIGNUPERROR",
-        "error": error
-    }
-}
-
-const showLoginError = (error) => {
-    return {
-        "type": "LOGINERROR",
-        "error": error
-    }
-}
 
 const showMap = (map, id) => {
     return {
@@ -91,4 +78,81 @@ const createPhotoRef = (photoRef) => {
         "photoRef": photoRef
     }
 }
-export {createPhotoRef, authenticate, toTakePhoto, showMap, fetchHotels, toSignUp,toBack, showSignUpError, showLoginError, setSignUpLogin, setSignUpPassword, setSignUpPassword2, setLoginEmail, setLoginPassword}
+
+const isLoaded = (isLoaded) => {
+    return {
+        "type": "ISLOADED",
+        "isLoaded": isLoaded
+    }
+}
+
+const choosePhoto = (photoIsChosen) => {
+    return {
+        "type": "CHOOSEPHOTO",
+        "photoIsChosen": photoIsChosen
+    }
+}
+
+const getGeoposition = (coordinates) => {
+    return {
+        "type": "GETGEOPOSITION",
+        "coordinates": coordinates
+    }
+}
+
+const setHotelNameForm = (hotelName) => {
+    return {
+        "type": "SETHOTELNAMEFORM",
+        "hotelName": hotelName,
+
+    }
+    
+}
+
+const setLatForm = (lattitude) => {
+    return {
+        "type": "SETLATFORM",
+        "lattitude": lattitude,
+
+    }
+    
+}
+
+const setLongForm = (longitude) => {
+    return {
+        "type": "SETLONGFORM",
+        "longitude": longitude,
+
+    }
+    
+}
+
+
+
+const setStarsForm = (stars) => {
+    return {
+        "type": "SETSTARSFORM",
+        "stars": stars,
+
+    }
+    
+}
+
+const setReviewForm = (review) => {
+    return {
+        "type": "SETREVIEWFORM",
+        "review": review,
+
+    }
+    
+}
+
+const setSrcImgs = (srcImgs) => {
+    return {
+        "type": "SETSRCIMGS",
+        "srcImgs": srcImgs
+    }
+}
+
+export {createPhotoRef, getGeoposition, authenticate, toTakePhoto, choosePhoto, showMap, fetchHotels, toSignUp,toBack, setSignUpLogin, setSignUpPassword, 
+    setSignUpPassword2, setLoginEmail, setLoginPassword, isLoaded, setHotelNameForm, setLatForm, setLongForm, setStarsForm, setReviewForm, setSrcImgs }

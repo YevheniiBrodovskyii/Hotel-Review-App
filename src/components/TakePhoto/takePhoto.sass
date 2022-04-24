@@ -1,1 +1,31 @@
+.TakePhoto
+    padding: 150px 0 50px 0
+    &_camera
+        width: 100%
+        height: 500px
+    &_flash
+        width: inherit
+        height: inherit
+        border-radius: 50px
+        background-color: #da6f11
+        border: 3px solid white
+        &--wrapper
+            width: 50px
+            height: 50px
+            margin: 15px auto
+    &_result
+        &-canvas
+            width: 415px
+            margin: 0 auto
+        &--wrapper
+            display: flex
+            justify-content: center
+        &-ok , &-close
+            margin: 15px 100px
+            background-color: unset
+            border: none
 
+.fa-check, .fa-arrow-left
+    text-shadow: 3px -3px black
+    font-size: 50px
+    color: #da6f11
