@@ -16,7 +16,9 @@ function MyAccount(props) {
   }
   return (
     <div className="MyAccount animate__animated animate__fadeIn">
-      <h3 className="MyAccount_title">Hi, {user.email}</h3>
+      <h3 className="MyAccount_title">
+        Hi, {user.displayName ? user.displayName : user.email}
+      </h3>
       <div className="MyAccount_logout-container">
         <button className="MyAccount_logout" onClick={logout}>
           Logout...

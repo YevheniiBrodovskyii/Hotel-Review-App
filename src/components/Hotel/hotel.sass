@@ -15,12 +15,18 @@
         grid-template: 80px 80px / 47.5% 47.5%
         column-gap: 5%
     &-img
-        background-color: grey
+        object-fit: contain
         grid-row: 1/3
         width: 100%
         height: 100%
+        font-size: 18px
+        color: black
+        text-align: center
     &-localization
         text-align: center
+    &-nomap
+        padding-top: 15px
+        font-size: 15px
     &-btn
         font-weight: 700
         font-size: 18px
@@ -28,6 +34,7 @@
         height: 40px
         margin: 0 auto
         background-color: #DAAD86
+        color: black
         border-radius: 30px
         cursor: pointer
         transition: 0.5s all
@@ -56,6 +63,7 @@
         font-size: 20px
         width: inherit
         background-color: unset
+        color: black
         border: none
         text-decoration: underline
         &--wrapper
@@ -80,6 +88,7 @@
             column-gap: 5%
         &-img
             grid-row: 1/3
+            line-height: 100px
         &-localization
             margin: 15px 0
             grid-row: 3/4

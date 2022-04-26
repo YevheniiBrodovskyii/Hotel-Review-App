@@ -15,8 +15,12 @@ function Search(props) {
       hotelsCopy.push([doc.id, doc.data()]);
     });
     for (let hotel of hotelsCopy) {
+      let hotelName = hotel[1].name.toLowerCase();
       let review = hotel[1].review.toLowerCase();
-      if (review.includes(search.toLowerCase())) {
+      if (
+        review.includes(search.toLowerCase()) ||
+        hotelName.includes(search.toLowerCase())
+      ) {
         keywordHotels.push(hotel);
       }
     }

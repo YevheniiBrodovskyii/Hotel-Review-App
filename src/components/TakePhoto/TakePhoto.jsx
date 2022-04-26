@@ -40,8 +40,8 @@ function TakePhoto() {
   };
   const takePhoto = async () => {
     console.log("Photo is Taking");
-    const width = 190;
-    const height = 160;
+    const width = 320;
+    const height = 270;
 
     let video = videoRef.current;
     let photo = photoRef.current;

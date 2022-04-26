@@ -15,7 +15,7 @@
             margin: 15px auto
     &_result
         &-canvas
-            width: 415px
+            width: 320px
             margin: 0 auto
         &--wrapper
             display: flex
@@ -29,3 +29,32 @@
     text-shadow: 3px -3px black
     font-size: 50px
     color: #da6f11
+
+@media ( min-width:320px) and ( max-width:480px)
+    .TakePhoto
+        padding: 30px 0 30px 0
+        &_camera
+            height: 300px
+        &_flash
+            width: inherit
+            height: inherit
+            border-radius: 50px
+            background-color: #da6f11
+            border: 3px solid white
+            &--wrapper
+                width: 50px
+                height: 50px
+                margin: 15px auto
+        &_result
+            &-canvas
+                width: 280px
+                margin: 0 auto
+                canvas
+                    width: 280px
+            &--wrapper
+                display: flex
+                justify-content: center
+            &-ok , &-close
+                margin: 15px 50px
+                background-color: unset
+                border: none

@@ -25,8 +25,8 @@ function CreateReview(props) {
   const [photoIsChosen, setPhotoIsChosen] = useState(null);
   const [errorNameSymbols, isErrorNameSymbols] = useState(false);
   const [errorReviewSymbols, isErrorReviewSymbols] = useState(false);
-  const [errorNameEmpty, isErrorNameEmpty] = useState(false);
-  const [errorReviewEmpty, isErrorReviewEmpty] = useState(false);
+  const [errorNameEmpty, isErrorNameEmpty] = useState(true);
+  const [errorReviewEmpty, isErrorReviewEmpty] = useState(true);
   const [errorReviewOverfill, isErrorReviewOverfill] = useState(false);
 
   // Take geolocation using gps build in phone

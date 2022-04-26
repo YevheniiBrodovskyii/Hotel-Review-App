@@ -39,6 +39,7 @@ function Hotel(props) {
     await deleteDoc(doc(db, "reviews", id));
     saveHotels();
   }
+
   return (
     <>
       {filter ? (
@@ -58,16 +59,22 @@ function Hotel(props) {
                     <img
                       className="Hotel_card-img"
                       src={photoSrc}
-                      alt="hotel_img"
+                      alt="Hotel img was not provided"
                     />
-                    <h3 className="Hotel_card-localization">
-                      <button
-                        className="Hotel_card-btn"
-                        onClick={() => setToShowMap(true)}
-                      >
-                        Show on map
-                      </button>
-                    </h3>
+                    <div className="Hotel_card-localization">
+                      {locatization.includes(null) ? (
+                        <h3 className="Hotel_card-nomap">
+                          Coordinates were not provided
+                        </h3>
+                      ) : (
+                        <button
+                          className="Hotel_card-btn"
+                          onClick={() => setToShowMap(true)}
+                        >
+                          Show on map
+                        </button>
+                      )}
+                    </div>
                     {starsMap.get(stars)}
                   </div>
                   <div className="Hotel_card-review">
@@ -106,22 +113,28 @@ function Hotel(props) {
                 <img
                   className="Hotel_card-img"
                   src={photoSrc}
-                  alt="hotel_img"
+                  alt="Hotel img was not provided"
                 />
-                <h3 className="Hotel_card-localization">
-                  <button
-                    className="Hotel_card-btn"
-                    onClick={() => setToShowMap(true)}
-                  >
-                    Show on map
-                  </button>
-                </h3>
+                <div className="Hotel_card-localization">
+                  {locatization.includes(null) ? (
+                    <h3 className="Hotel_card-nomap">
+                      Coordinates were not provided
+                    </h3>
+                  ) : (
+                    <button
+                      className="Hotel_card-btn"
+                      onClick={() => setToShowMap(true)}
+                    >
+                      Show on map
+                    </button>
+                  )}
+                </div>
                 {starsMap.get(stars)}
               </div>
               <div className="Hotel_card-review">
                 <p className="Hotel_card-review-content">{review}</p>
               </div>
-              <h5 className="Hotel_card-author">Wroten by {author}</h5>
+              <h5 className="Hotel_card-author">Written by {author}</h5>
             </div>
           )}
         </>

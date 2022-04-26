@@ -15,6 +15,7 @@ function SignUpPage(props) {
   const [signUpPassword2, setSignUpPassword2] = useState("");
   const [errorEmailEmpty, iserrorEmailEmpty] = useState(false);
   const [errorEmailValid, iserrorEmailValid] = useState(false);
+  const [errorAuth, setErrorAuth] = useState(false);
   const [errorPasswordEmpty, iserrorPasswordEmpty] = useState(false);
   const [errorPasswordMatch, iserrorPasswordMatch] = useState(false);
 
@@ -37,9 +38,21 @@ function SignUpPage(props) {
           setSignUpPassword2("");
         })
         .catch((error) => {
+          console.log(error.message);
+          if (error.message === "Firebase: Error (auth/invalid-email).") {
+            setErrorAuth("Incorrect Email!");
+          } else if (
+            error.message === "Firebase: Error (auth/email-already-in-use)."
+          ) {
+            setErrorAuth("User with this email already registered!");
+          } else if (
+            error.message ===
+            "Firebase: Password should be at least 6 characters (auth/weak-password)."
+          ) {
+            setErrorAuth("Password is weak!");
+          }
           navigator.vibrate(1000);
-          const errorMessage = error.message;
-          console.log(errorMessage);
+          console.log("User logged out");
         });
     }
   }
@@ -147,6 +160,11 @@ function SignUpPage(props) {
               />
               {errorPasswordMatch ? (
                 <div className="SignUp_error">Passwords didn't match!</div>
+              ) : (
+                <></>
+              )}
+              {errorAuth ? (
+                <div className="SignUp_error">{errorAuth}</div>
               ) : (
                 <></>
               )}
